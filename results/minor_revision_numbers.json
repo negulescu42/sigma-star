@@ -1,0 +1,110 @@
+{
+  "item1_sensitivity_sigma_range": {
+    "resnet18": {
+      "sigma_range": [
+        4.15,
+        5.85
+      ],
+      "ratio": 1.41,
+      "acc_span_pt": 2.18
+    },
+    "resnet50": {
+      "sigma_range": [
+        8.3,
+        11.57
+      ],
+      "ratio": 1.39,
+      "acc_span_pt": 6.73
+    },
+    "vit": {
+      "sigma_range": [
+        5.87,
+        7.85
+      ],
+      "ratio": 1.34,
+      "acc_span_pt": 1.95
+    },
+    "framing": "sigma varies only 1.34-1.41x across the grid (referee's predicted compression); report as CONJUNCTION - flat acc AND tail<=budget across grid, while 3.6-6x larger fails catastrophically"
+  },
+  "item2_certified_delta": {
+    "resnet18": {
+      "delta": 0.512,
+      "interq_median": 31.8,
+      "ratio": 0.0161,
+      "L": 0.0781
+    },
+    "resnet50": {
+      "delta": 0.999,
+      "interq_median": 62.4,
+      "ratio": 0.016,
+      "L": 0.0407
+    },
+    "vit": {
+      "delta": 0.862,
+      "interq_median": 39.4,
+      "ratio": 0.0219,
+      "L": 0.0423
+    },
+    "framing": "delta strictly positive (non-vacuous) but ~1.6-2.2% of median inter-query distance; HONEST: uniform-over-region ball is small; pointwise certificate carries the paper"
+  },
+  "item3_purity_wording": "Theorem 1 certifies WHICH sources decide (equality with near-field vote), NOT that near-field vote is correct; near purity 0.25-0.47 = plurality not majority; 'intended sources'='near sources'",
+  "item4_modality_baselines": {
+    "DBpedia": {
+      "star": [
+        0.24,
+        92.1
+      ],
+      "median": [
+        45609,
+        89.0
+      ],
+      "knn7": [
+        33492,
+        89.1
+      ]
+    },
+    "AGNews": {
+      "star": [
+        0.27,
+        87.9
+      ],
+      "median": [
+        13018,
+        85.7
+      ],
+      "knn7": [
+        10272,
+        85.8
+      ]
+    },
+    "Yahoo": {
+      "star": [
+        0.3,
+        66.9
+      ],
+      "median": [
+        32631,
+        65.8
+      ],
+      "knn7": [
+        24822,
+        66.0
+      ]
+    },
+    "Covertype": {
+      "star": [
+        0.1,
+        65.0
+      ],
+      "median": [
+        20755,
+        53.9
+      ],
+      "knn7": [
+        102,
+        60.0
+      ]
+    },
+    "framing": "budget failure travels universally (100-10^5x overshoot everywhere); accuracy failure regime-dependent (text 1-3pt, tabular up to 11pt) - report the nuance honestly"
+  }
+}

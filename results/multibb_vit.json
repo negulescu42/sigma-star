@@ -1,0 +1,45 @@
+{
+  "name": "vit",
+  "dim": 768,
+  "eps": 0.05,
+  "d": 36.09389114379883,
+  "A_ref": 16578.0703125,
+  "sigma_pair": 14.745761567898617,
+  "sigma_star": 7.158452352204976,
+  "sigma_cv": 6.348192545749498,
+  "silverman": {
+    "sigma": 27.17379035246564,
+    "tail_over_eps": 123721.240234375,
+    "giant_frac": 1.0,
+    "acc": 0.636
+  },
+  "scott": {
+    "sigma": 27.35957379108644,
+    "tail_over_eps": 125473.759765625,
+    "giant_frac": 1.0,
+    "acc": 0.636
+  },
+  "pair": {
+    "sigma": 14.745761567898617,
+    "tail_over_eps": 9962.953491210938,
+    "giant_frac": 1.0,
+    "acc": 0.6566
+  },
+  "star": {
+    "sigma": 7.158452352204976,
+    "tail_over_eps": 0.1559373363852501,
+    "giant_frac": 0.0382,
+    "acc": 0.7246
+  },
+  "cv": {
+    "sigma": 6.348192545749498,
+    "tail_over_eps": 0.0036175461718812585,
+    "giant_frac": 0.0134,
+    "acc": 0.7303
+  },
+  "abramson": {
+    "acc": 0.3627,
+    "h0": 7.158452352204976,
+    "note": "variable-bw sqrt-law, h0=sigma_star"
+  }
+}

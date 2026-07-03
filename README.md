@@ -25,6 +25,22 @@ so measuring it once is provably conservative and the certificate holds without 
 | `rcp_paper.tex`, `rcp_si.tex` | LaTeX-style source (custom markup consumed by the builders) |
 | `build_pdf.py`, `build_si.py` | Offline builders — pure-Python (ReportLab + matplotlib math engine), no LaTeX toolchain required |
 | `figures/` | The six figures (main: fig2, fig5, fig6, fig7; SI: fig1, fig3) |
+| `experiments/` | The experiment scripts behind every reported number (certificate, δ-ball, p99/max-A, purity, growth, modality sweep, GRACE boundary) |
+| `results/` | Released result files (JSON) with the exact per-experiment outputs the tables and figures are drawn from |
+
+### Experiments
+
+| Script | Produces |
+|--------|----------|
+| `p99cert.py`, `maxacert.py` | Per-query interference tail and zero-exceedance certificates on the three frozen backbones (ResNet-18/50, ViT-B/16) |
+| `delta_cert.py` | Uniform-over-region δ-ball certificate radii |
+| `purity.py` | Weighted near-set class purity (Table 1 near-purity column) |
+| `revexp.py` | Sensitivity sweep over ε and the radius percentile |
+| `modality_sweep.py` | Four non-image modalities — DBpedia, AG-News, Yahoo, Covertype (Table 2) |
+| `grace_defer.py`, `grace_sweep.py`, `grace_editsite.py` | The GRACE LLM-edit-scope boundary (Section 6 honest negative) |
+
+Result files in `results/` are named `<experiment>_<backbone|corpus>.json` and carry the
+σ values, tails, accuracies, and seeds; every number in the manuscript traces to one of them.
 
 ## Rebuilding
 

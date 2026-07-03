@@ -1,0 +1,20 @@
+{
+  "name": "resnet18",
+  "d10": 26.018503189086914,
+  "sigma_star": 5.2233717033541955,
+  "chance_purity": 0.01,
+  "weighted_near_purity": {
+    "mean": 0.3090651333332062,
+    "median": 0.16427837312221527
+  },
+  "unweighted_near_purity": {
+    "mean": 0.19434517621994019,
+    "median": 0.059608396142721176
+  },
+  "selective_margin_acc": {
+    "cov0.27": 0.6792592592592592,
+    "cov0.5": 0.65,
+    "cov0.75": 0.614,
+    "cov1.0": 0.5664
+  }
+}

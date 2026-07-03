@@ -1,0 +1,22 @@
+{
+  "model": "gpt2-large",
+  "n_edit": 250,
+  "editsite": {
+    "cproj_in_L18": {
+      "auroc_raw": 0.41080800000000006,
+      "auroc_whitened": 0.22888799999999998
+    },
+    "cproj_in_L24": {
+      "auroc_raw": 0.40584,
+      "auroc_whitened": 0.25508
+    },
+    "cproj_in_L30": {
+      "auroc_raw": 0.443392,
+      "auroc_whitened": 0.29632000000000003
+    }
+  },
+  "best": [
+    "cproj_in_L30",
+    0.443392
+  ]
+}

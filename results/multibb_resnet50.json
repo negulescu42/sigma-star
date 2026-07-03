@@ -1,0 +1,45 @@
+{
+  "name": "resnet50",
+  "dim": 2048,
+  "eps": 0.05,
+  "d": 51.21739196777344,
+  "A_ref": 11872.515625,
+  "sigma_pair": 20.924301208686614,
+  "sigma_star": 10.293954544713934,
+  "sigma_cv": 6.348192545749498,
+  "silverman": {
+    "sigma": 44.900217426646755,
+    "tail_over_eps": 127973.076171875,
+    "giant_frac": 1.0,
+    "acc": 0.2661
+  },
+  "scott": {
+    "sigma": 45.036948564900236,
+    "tail_over_eps": 129225.76171875,
+    "giant_frac": 1.0,
+    "acc": 0.2661
+  },
+  "pair": {
+    "sigma": 20.924301208686614,
+    "tail_over_eps": 4892.13134765625,
+    "giant_frac": 0.9658,
+    "acc": 0.3388
+  },
+  "star": {
+    "sigma": 10.293954544713934,
+    "tail_over_eps": 0.08931083604693413,
+    "giant_frac": 0.0692,
+    "acc": 0.5098
+  },
+  "cv": {
+    "sigma": 6.348192545749498,
+    "tail_over_eps": 5.356548971741093e-11,
+    "giant_frac": 0.0006,
+    "acc": 0.5606
+  },
+  "abramson": {
+    "acc": 0.1195,
+    "h0": 10.293954544713934,
+    "note": "variable-bw sqrt-law, h0=sigma_star"
+  }
+}
