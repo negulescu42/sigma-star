@@ -1,0 +1,30 @@
+{
+  "model": "gpt2-large",
+  "n_edit": 1500,
+  "n_heldout": 495,
+  "routes": {
+    "A_infonce": {
+      "rank": 64,
+      "wd": 0.001,
+      "auroc_train": 1.0,
+      "auroc_heldout": 0.6688598394393921
+    },
+    "B_mpnet": {
+      "auroc_heldout_raw": 0.8091955184936523,
+      "auroc_heldout_pca_whiten": 0.7786210775375366
+    },
+    "C_fusion": {
+      "auroc_heldout": 0.7566570043563843
+    }
+  },
+  "gate1b": {
+    "candidates": {
+      "A_infonce": 0.6688598394393921,
+      "B_mpnet_pca": 0.7786210775375366,
+      "C_fusion": 0.7566570043563843
+    },
+    "best_route": "B_mpnet_pca",
+    "best_heldout_auroc": 0.7786210775375366,
+    "verdict": "PARTIAL"
+  }
+}
