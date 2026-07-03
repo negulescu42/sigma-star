@@ -1,0 +1,125 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newcommand{\Ksig}{K_{\sigma}}
+\newcommand{\sstar}{\sigma^{*}}
+\newcommand{\Neff}{N_{\mathrm{eff}}}
+\newcommand{\Tail}{\mathrm{Tail}}
+\newcommand{\Rbb}{\mathbb{R}}
+\title{\vspace{-1.2em}Supplementary Information\\ The Resolution Calibration Principle: A Certified Bandwidth for Kernel Fields}
+\author{R. Negulescu\thanks{The Informational Buildup Foundation (IBF). \texttt{radu@ibf.ro}} \and
+        C. Bereanu\thanks{The Simion Stoilow Institute of Mathematics of the Romanian Academy (IMAR). \texttt{c.bereanu@imar.ro}}}
+\date{}
+\begin{document}
+\twocolumn[
+\begin{@twocolumnfalse}
+\maketitle
+\begin{abstract}
+This document collects the full proofs of the propositions, theorem, and corollary stated in the main paper. Each Supplementary Note restates the result exactly as it appears in the main text and then gives the complete derivation; the main paper carries only the statements and short proof sketches. Equation and symbol conventions are those of the main text: a kernel field $F=(z_i,v_i)$ with Gaussian kernel $\Ksig(t)=e^{-t/2\sigma^2}$, far set $\mathcal{F}=\{i:\lVert y-z_i\rVert>d\}$, effective mass $A=V_{\max}\Neff$ with participation ratio $\Neff=(\sum_{i\in\mathcal{F}}\omega_i)^2/\sum_{i\in\mathcal{F}}\omega_i^2$, and certified frontier $\sstar=d/\sqrt{2\ln(A/\varepsilon)}$ under assumptions (A1) bounded weights $V_{\max}=1$, (A2) a meaningful near/far radius $d$, and (A3) budget below mass $0<\varepsilon<A$.
+\end{abstract}
+\vspace{0.8em}
+\end{@twocolumnfalse}
+]
+\section{Supplementary Note 1 --- Safety frontier and aggregate tail bound}
+\begin{proposition}[Safety frontier]
+For fixed $A>0$, $d>0$, and tolerance $0<\varepsilon<A$, the equation $\mathrm{cert}(A,\sigma,d)=A\,\Ksig(d^2)=\varepsilon$ has the unique solution
+\begin{equation}
+\sstar(A,\varepsilon,d)=\frac{d}{\sqrt{2\ln(A/\varepsilon)}},
+\end{equation}
+and the safe set $\{\sigma>0:\mathrm{cert}(A,\sigma,d)\le\varepsilon\}$ is the interval $(0,\sstar]$.
+\end{proposition}
+\begin{proof}
+$\mathrm{cert}$ is continuous and strictly increasing in $\sigma$ on $(0,\infty)$, from $0^+$ to $A>\varepsilon$; solving $A\,e^{-d^2/2\sigma^2}=\varepsilon$ for $\sigma$ gives the stated $\sstar$, and monotonicity gives the interval.
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig1_certificate.png}
+\caption{\textbf{The certificate.} (a) Aggregate interference $\mathrm{cert}(\sigma)$ is strictly increasing in $\sigma$; the largest $\sigma$ holding it below the budget $\varepsilon$ is the unique frontier $\sstar$ (Proposition~1). (b) At a query, sources split into near (intended) and far (interference); $\sstar$ bounds the far mass by $\varepsilon$.}
+\end{figure}
+
+
+\paragraph{Aggregate tail bound.} The single-source frontier extends to the whole far tail. Every far source satisfies $\lVert y-z_i\rVert>d$, so by monotonicity of the Gaussian its weight obeys $\omega_i=\Ksig(\lVert y-z_i\rVert^2)\le\Ksig(d^2)$. Hence $\sum_{i\in\mathcal{F}}\omega_i^2\le\Ksig(d^2)\sum_{i\in\mathcal{F}}\omega_i$, which rearranges to $\sum_{i\in\mathcal{F}}\omega_i\le\Neff\,\Ksig(d^2)$. Therefore
+\begin{equation}
+\mathrm{Tail}_\sigma(y,d)=\sum_{i\in\mathcal{F}}|v_i|\,\omega_i\le V_{\max}\,\Neff\,\Ksig(d^2)=\mathrm{cert}(A,\sigma,d),
+\end{equation}
+with $A=V_{\max}\Neff$, using $|v_i|\le V_{\max}$ then the rearranged inequality. The only assumption is $\omega_i\le\Ksig(d^2)$ for far sources, which the near/far partition (A2) guarantees by construction. The bound is tight when all far sources sit exactly at radius $d$: there $\omega_i=\Ksig(d^2)$ for every $i\in\mathcal{F}$, both inequalities become equalities, and the aggregate tail attains $\mathrm{cert}(A,\sigma,d)$. Setting $\sigma=\sstar$ makes this aggregate leakage at most $\varepsilon$.
+\section{Supplementary Note 2 --- Conservativeness of one-shot mass measurement}
+\begin{proposition}[Conservativeness]
+The effective mass $\Neff(\sigma)$ is nondecreasing in $\sigma$. Consequently $\sstar\le\sigma_{\mathrm{pair}}$, the mass measured at $\sigma_{\mathrm{pair}}$ satisfies $A(\sigma_{\mathrm{pair}})\ge A(\sstar)$, and the true tail at the deployed bandwidth obeys $\mathrm{Tail}_{\sstar}(y,d)\le A(\sigma_{\mathrm{pair}})\,\Ksig[\sstar](d^2)=\varepsilon$.
+\end{proposition}
+\begin{proof}
+The far set $\mathcal{F}$ is fixed by the geometric radius $d$ and does not depend on $\sigma$, so we may differentiate over a fixed index set. Write the far kernel weights as $w_i=\exp(-r_i^2 u)$, $i\in\mathcal{F}$, with $u=1/(2\sigma^2)$, so $\Neff=S_1^2/S_2$ with $S_1=\sum_{i\in\mathcal{F}} w_i>0$, $S_2=\sum_{i\in\mathcal{F}} w_i^2>0$, and each $w_i$ is a strictly decreasing function of $u$. Differentiating with $\partial_u w_i=-r_i^2 w_i$ gives $\partial_u S_1=-\sum_i r_i^2 w_i$ and $\partial_u S_2=-2\sum_i r_i^2 w_i^2$, so $\partial_u\Neff=(2S_1/S_2^2)\,B$ with $B=S_1\sum_i r_i^2 w_i^2-S_2\sum_i r_i^2 w_i$. Expanding this as a double sum over index pairs and symmetrising by averaging the $(i,j)$ and $(j,i)$ terms,
+\begin{equation}\label{eq:symm}
+B=\tfrac{1}{2}\sum_{i,j}\left(r_j^2-r_i^2\right)\left(w_j-w_i\right)w_i\,w_j.
+\end{equation}
+In each summand the map $r_k^2\mapsto w_k=e^{-r_k^2 u}$ is strictly decreasing, so $(r_j^2-r_i^2)$ and $(w_j-w_i)$ always carry opposite signs; their product is $\le0$, and with $w_iw_j>0$ every summand is $\le0$. Hence $B\le0$, giving $\partial_u\Neff\le0$; since $u=1/(2\sigma^2)$ is decreasing in $\sigma$, $\Neff$ is nondecreasing in $\sigma$.
+
+For the ordering, note it does \emph{not} depend on the measured value of $A$. The frontier $\sstar(A)=d/\sqrt{2\ln(A/\varepsilon)}$ is a strictly decreasing function of $A$ on $A>\varepsilon$, and $\sigma_{\mathrm{pair}}=\sstar(1)$ by definition. Since the normalisation $V_{\max}=1$ and the bound $\Neff\ge1$ give $A=V_{\max}\Neff\ge1$ for \emph{any} field and \emph{any} measurement bandwidth, we have $\sstar(A)\le\sstar(1)=\sigma_{\mathrm{pair}}$ before $A$ is evaluated---the inequality is structural, not a consequence of the particular measured mass. Measuring the mass at $\sigma_{\mathrm{pair}}\ge\sstar$ therefore samples $\Neff$ at a larger bandwidth than deployment, and monotonicity gives $A(\sigma_{\mathrm{pair}})\ge A(\sstar)$. Substituting this larger mass into the aggregate bound $\mathrm{Tail}_{\sstar}(y,d)\le A(\sstar)\,\Ksig[\sstar](d^2)\le A(\sigma_{\mathrm{pair}})\,\Ksig[\sstar](d^2)=\varepsilon$ yields the claim; the one-shot measurement can only over-state the mass, so the certificate holds without iteration.
+\end{proof}
+
+\paragraph{Fixed-point interpretation.} The one-shot value already certifies, so no iteration is required. If one nonetheless iterates the re-measurement $A\!\to\!\sstar(A)\!\to\!A$, each step deploys at a smaller bandwidth and re-measures a smaller mass; the map is monotone and bounded below by $A(\sstar)\ge1$, so it converges to the self-consistent fixed point where the measurement and deployment bandwidths coincide. Empirically this takes six to seven steps, but every intermediate value is already a valid certificate.
+\section{Supplementary Note 3 --- Decision stability and performance floor}
+\begin{theorem}[Decision stability]
+If $\sigma\le\sstar$ and the local margin $m(y)>2\varepsilon$, then the deployed prediction equals the local prediction: the far field cannot change the decision.
+\end{theorem}
+\begin{proof}
+Let $a$ be the local top class and $b$ any other. Then $S_a-S_b=(S_a^{\mathrm{near}}-S_b^{\mathrm{near}})+(S_a^{\mathrm{far}}-S_b^{\mathrm{far}})\ge m(y)-2\varepsilon>0$, since each far term is bounded in magnitude by $\varepsilon$. So $a$ remains the deployed argmax.
+\end{proof}
+
+\begin{corollary}[Performance floor]
+At $\sigma\le\sstar$, deployed accuracy $\ge$ (near-field accuracy) $-\ \Pr[\,m(y)\le 2\varepsilon\,]$, where $\Pr[\,m(y)\le 2\varepsilon\,]$ is the fraction of queries whose local margin does not clear the budget.
+\end{corollary}
+\begin{proof}
+By Theorem~1 every query with $m(y)>2\varepsilon$ has its deployed prediction equal to its local prediction, so it is correct whenever the local prediction is correct. The deployed error can therefore exceed the near-field error only on the set $\{m(y)\le2\varepsilon\}$, whose measure is $\Pr[\,m(y)\le2\varepsilon\,]$; subtracting this fraction from the near-field accuracy gives the stated floor.
+\end{proof}
+
+\paragraph{The role of $2\varepsilon$.} The budget $\varepsilon$ bounds the far part of \emph{each} class score, $|S_c^{\mathrm{far}}|\le\varepsilon$. A pairwise score gap $S_a-S_b$ combines two such scores, so its far perturbation is bounded by $2\varepsilon$; this is why the stability threshold is $2\varepsilon$ rather than $\varepsilon$. A query whose near margin fails to clear $2\varepsilon$ is not necessarily misclassified---it is merely \emph{uncertified}, and a deployer may abstain on exactly this set, which is the abstention reading of the same inequality.
+\section{Supplementary Note 4 --- Uniform-over-region certificate}
+\begin{proposition}[Uniform-over-region certificate]
+Let $B(c,\delta)$ be a ball of radius $\delta$ whose points all remain at distance $>d\ge\sigma$ from every far source. Then
+\begin{equation}
+\sup_{y\in B(c,\delta)}\mathrm{Tail}_\sigma(y,d)\;\le\;\mathrm{Tail}_\sigma(c,d)+L\,\delta,\qquad L=V_{\max}\,|\mathcal{F}|\,\frac{d}{\sigma^2}\,\Ksig(d^2),
+\end{equation}
+with Lipschitz constant $L$ independent of the ambient dimension $n$. Choosing $\sigma$ so the right-hand side is $\le\varepsilon$ certifies the whole region.
+\end{proposition}
+\begin{proof}
+$\mathrm{Tail}_\sigma$ is a sum over the far set of Gaussians in $y$; each summand $|v_i|\,\Ksig(\rho_i^2)$ with $\rho_i=\lVert y-z_i\rVert$ has gradient of norm $|v_i|\,(\rho_i/\sigma^2)\,\Ksig(\rho_i^2)$. The map $\rho\mapsto(\rho/\sigma^2)\,\Ksig(\rho^2)=(\rho/\sigma^2)e^{-\rho^2/2\sigma^2}$ is decreasing for $\rho\ge\sigma$, so for every far source, where $\rho_i>d\ge\sigma$, the per-source slope is bounded by $|v_i|\,(d/\sigma^2)\,\Ksig(d^2)\le V_{\max}\,(d/\sigma^2)\,\Ksig(d^2)$. Summing over the $|\mathcal{F}|$ far sources and applying the mean-value inequality from $c$ to $y\in B(c,\delta)$ gives the stated $L$.
+\end{proof}
+
+\paragraph{Why the far-set count, not the participation ratio.} The Lipschitz constant sums the \emph{gradient magnitudes} of the individual far Gaussians, and a bound on a sum of $|\mathcal{F}|$ per-source slopes cannot be replaced by the participation ratio $\Neff$: $\Neff$ compresses the far weights through a ratio of $\ell_1$ and $\ell_2$ norms, an operation valid for the tail \emph{value} (Note 1) but not for a sum of slopes, where every far source contributes its full gradient. An earlier version of this bound transferred $\Neff$ here; the corrected constant carries the raw count $|\mathcal{F}|$. It remains exponentially small through $\Ksig(d^2)$: at $\sigma=\sstar$, $\Ksig[\sstar](d^2)=\varepsilon/A$, so $L=(|\mathcal{F}|/A)(d\varepsilon/\sstar^2)$, larger than the erroneous constant when $|\mathcal{F}|\gg\Neff$ and comparable when the far set overlaps little.
+
+\paragraph{Practical interpretation.} On the flagship ResNet-18 field at $\varepsilon=0.05$ the certified ball radius is $\delta\approx0.5$ in the standardised feature metric---strictly positive, so the region certificate is non-vacuous, but small, about $1.6\%$ of the median inter-query distance (ResNet-50 gives $\delta\approx1.0$, also $1.6\%$; ViT gives $\delta\approx0.9$, about $2.2\%$). The uniform-over-region certificate is therefore genuine but tight; the per-query certificate of Theorem~1, which needs no such ball, carries the main deployment claims.
+
+
+
+\section{Supplementary Note 5 --- Robustness of the certificate}
+
+\paragraph{Is the near/far radius meaningful?} Assumption (A2) asks that the radius $d$ separate ``intended'' from ``interfering'' sources. We test this directly by measuring, at $\sstar$, the kernel-weighted fraction of near-set mass that shares the query's class---the quantity the vote actually uses. It is $0.31$, $0.25$, and $0.47$ on ResNet-18, ResNet-50, and ViT-B/16, against a chance level of $0.01$ for $100$ classes: a $25$--$47\times$ enrichment, so the near set is strongly class-aligned. Two honest qualifications. This is a \emph{plurality}, not a majority---on two of three backbones most individual near sources are other-class---so ``intended sources'' should be read as ``near sources,'' and the decision-equality guarantee of Theorem~1 is equality with the near-field \emph{vote}, which is itself only weakly pure: the certificate guarantees \emph{which} sources decide, not that they decide correctly. Accuracy is a separate, measured outcome (Table~1 of the main paper), not a corollary of the certificate.
+
+\paragraph{Sensitivity to the budget and radius.} The budget $\varepsilon$ and the radius percentile are inputs, so we sweep them: $\varepsilon\in\{0.01,0.05,0.1,0.2\}$ crossed with the $\{5,10,20\}$th distance percentile for $d$. Deployed accuracy varies by only $2.2$ points (ResNet-18), $6.7$ (ResNet-50), and $2.0$ (ViT) across the whole grid. This flatness must be read correctly: over that grid the realised $\sstar$ itself spans only a $1.34$--$1.41\times$ range (in concentrated high-dimensional geometry the distance percentiles are close and $\sqrt{2\ln(A/\varepsilon)}$ moves slowly), so the informative statement is the \emph{conjunction}---across the grid, accuracy is flat \emph{and} the certified tail stays below budget, while a bandwidth only $4$--$6\times$ larger (the distance heuristics) fails catastrophically. The budget is a genuine dial with a mild, monotone effect on the operating point, not a hidden accuracy knob.
+
+\paragraph{Pointwise versus average.} The certificate is derived per query, but $A$ is measured as an \emph{average} $\Neff$ over the deployment queries, so the reported tail/$\varepsilon$ is strictly an average-case quantity; a per-query guarantee requires the tail to hold at \emph{every} query, not on average. We therefore measure the full per-query distribution on the ResNet-18 field ($10{,}000$ held-out queries at $\sstar$): tail/$\varepsilon$ has mean $0.08$, $95$th percentile $0.18$, $99$th percentile $0.20$, and \emph{maximum} $0.24$---not a single query exceeds the budget. The average-$A$ certificate is thus empirically pointwise here, with fourfold headroom at the worst query.
+
+\paragraph{An a-priori certificate by quantile choice.} The average is a convenience, not a requirement: the same closed form delivers a strict per-query certificate if $A$ is chosen as an upper quantile of $\Neff$ rather than its mean. This is not empirical luck but a direct reading of the frontier. Because $\sstar(A)$ is decreasing in $A$ and $\mathrm{Tail}_\sigma(y,d)\le V_{\max}\Neff(y)\,K_\sigma(d^2)$ pointwise, deploying at $\sstar(A_q)$ with $A_q$ the $(1-\alpha)$-quantile of $\Neff$ over the region guarantees the budget at \emph{every} query whose $\Neff(y)\le A_q$---that is, at all but at most an $\alpha$-fraction of the region by construction; taking $A_q=\sup_y\Neff(y)$ ($\alpha=0$) certifies the whole region uniformly. The quantile level is thus a dial on the allowed per-query failure rate, read off the same geometry, at no labels. Empirically the tail is far below this worst case: at $\alpha=0.01$ (the $99$th percentile) the \emph{measured} maximum tail/$\varepsilon$ over $10{,}000$ queries stays inside the budget on all three backbones---$0.19$ on ResNet-18, $0.17$ on ResNet-50, $0.27$ on ViT-B/16, with zero exceedances anywhere---while accuracy is unchanged to within $0.2$ points because $\sstar(A_{q})$ is only about one percent smaller than $\sstar(A_{\mathrm{mean}})$. Even the fully uniform choice $A_{\max}=\sup_y\Neff(y)$ costs essentially nothing: accuracy changes by at most $0.21$ points from the mean-$A$ field on all three backbones (marginally higher, in fact), again with zero exceedances by construction. So the per-query certificate the theory states is deployable a priori across the suite at negligible cost, with the quantile level set to the failure rate a deployment will tolerate.
+
+\paragraph{Drift of the radius $d$.} The conservativeness result (Proposition~2) is stated at fixed near/far radius $d$. Because $d$ is the tenth percentile of pairwise centre distances, as the field densifies from fixed class-conditional distributions $d$ converges to its population quantile at the sample-quantile rate $O_p(n^{-1/2})$ (Bahadur representation); empirically it drifts by only $1.0\%$ across a $40\times$ increase in field size (a log--log rate exponent of $-0.71$, consistent with the $-1/2$ theory), so re-estimating $d$ per stage corrects a vanishing term and the fixed-$d$ theorem is asymptotically exact.
+
+\section{Supplementary Note 6 --- Selective-prediction operating point}
+The abstention readout gives a label-free, per-query support signal: a query with no near mass carries no certificate, and the field declines it. To place its operating point quantitatively, we compare against a margin-threshold selective predictor on the same $\sstar$ vote. At the certificate's $27\%$ coverage on ResNet-18 a labelled margin threshold reaches $68\%$ accuracy, against the field's full-coverage $57\%$ ($74\%$ vs $51\%$ on ResNet-50, $93\%$ vs $72\%$ on ViT-B/16). The certified-stable set therefore sits \emph{on} the field's accuracy--coverage curve rather than above it: $\sstar$'s distinguishing property is not a higher accuracy at matched coverage but that its selection rule is label-free and carries an a-priori interference guarantee, where the margin threshold needs labels to set. This is the sense in which $\sstar$ is a single object---one bound on the far field, read three ways---rather than a competitor to labelled selective prediction.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig3_perfcert.png}
+\caption{\textbf{The performance certificate} (frozen ResNet-18, CIFAR-100). (a) Fraction of test queries flagged certified-stable (light), and---of those---the fraction whose deployed prediction equals the intended local prediction (hatched); at $\sstar$ and at the grid-search $\sigma$ this is exactly $100\%$ (Theorem~1). (b) The certificate and deployed accuracy move together: holding tail $\le\varepsilon$ is what recovers accuracy.}
+\end{figure}
+
+
+\section{Supplementary Note 7 --- Reproducibility}
+
+\paragraph{Computational specification.} All reported quantities are computed as follows. Features are standardised per dimension ($z$-score using the training mean and standard deviation); distances are Euclidean in that standardised space. The radius $d$ is the $10$th percentile of pairwise centre distances over a $4{,}000$-centre subsample; $A$ and $\Neff$ are the far-mask participation ratio averaged over $2{,}000$ held-out queries measured at $\sigma_{\mathrm{pair}}$; the reported tail/$\varepsilon$ is the \emph{average} far mass over held-out queries divided by $\varepsilon$ (the full per-query distribution, including the maximum, is reported for the flagship field above); the giant-component percentage is the largest connected component as a fraction of $5{,}000$ sampled centres, with an edge whenever two centres lie within $3\sigma$ (this diagnostic is \emph{illustrative} of field locality, not itself the certificate---a larger $\sigma$ mechanically connects more centres, so it visualises the collapse rather than measuring the interference bound). The labelled comparator (``grid'') selects the bandwidth that maximises held-out accuracy over a $30$-point log-spaced grid; it is a grid search on labelled accuracy, not a $k$-fold procedure. The grid spans $[0.5,30]$ for the vision fields and $[0.3,40]$ for the text and modality fields; for the lower-dimensional public datasets it is log-spaced to cover the data scale of each dataset. The accompanying result files for the vision, text, and modality experiments record the exact grid and selected bandwidth for each. The interference budget is $\varepsilon=0.05$ throughout. Every run uses a fixed seed; the five-seed re-samples vary only the drawn centres and queries. Scripts and result files accompany the manuscript.
+\end{document}

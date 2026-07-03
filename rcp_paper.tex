@@ -1,0 +1,246 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[margin=1.7cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Ksig}{K_{\sigma}}
+\newcommand{\sstar}{\sigma^{*}}
+\newcommand{\Neff}{N_{\mathrm{eff}}}
+\newcommand{\Tail}{\mathrm{Tail}}
+\newcommand{\Rbb}{\mathbb{R}}
+
+\title{\vspace{-1.2em}The Resolution Calibration Principle:\\ A Certified Bandwidth for Kernel Fields}
+\author{R. Negulescu\thanks{The Informational Buildup Foundation (IBF). \texttt{radu@ibf.ro}} \and
+        C. Bereanu\thanks{The Simion Stoilow Institute of Mathematics of the Romanian Academy (IMAR). \texttt{c.bereanu@imar.ro}}}
+\date{}
+
+\begin{document}
+\twocolumn[
+\begin{@twocolumnfalse}
+\maketitle
+\begin{abstract}
+A \emph{kernel field} reads a metric space through a superposition of Gaussian kernels at weighted sources; kernel density estimators, Nadaraya--Watson regressors, radial-basis interpolants, Gaussian-process readouts, and the correction fields of model editing are all instances. Their behaviour is governed by one number, the bandwidth $\sigma$, almost always chosen by labelled search---grid, random, or cross-validation---which returns no guarantee. We show that for a kernel field the bandwidth can instead be \emph{calibrated} in closed form against an interference budget: the certified frontier $\sstar = d/\sqrt{2\ln(A/\varepsilon)}$ is the largest bandwidth whose aggregate far-source interference past a radius $d$ is provably below a budget $\varepsilon$, with the effective interfering mass $A$ \emph{measured} from the field rather than tuned. Our central structural result is that this measured mass is nondecreasing in $\sigma$, so measuring it once is provably conservative and the certificate holds without any tuning. On frozen ResNet-18, ResNet-50, and ViT-B/16 correction fields over CIFAR-100, and across text and tabular modalities, $\sstar$ holds the interference budget where naive, cross-validated, and classical density-estimation bandwidths do not---including the median-heuristic and $k$-nearest-neighbour distance rules, which overshoot the budget by roughly five orders of magnitude on the dense vision fields (and by two to five orders across text and tabular modalities)---matches a labelled grid search within $1$--$5$ points on vision and text (about $6$ on low-dimensional tabular data) using zero labels, and re-certifies as the field grows. The bandwidth question, for a kernel field, is a calibration, not a search.
+\end{abstract}
+\vspace{0.8em}
+\end{@twocolumnfalse}
+]
+
+\section{Introduction}
+A \emph{kernel field} is one of the most reused constructions in applied mathematics: place weighted sources at points $z_i$ of a metric space, attach to each a Gaussian kernel of common width $\sigma$, and read the field at any query $y$ as the superposition of the nearby kernels. Kernel density estimators, Nadaraya--Watson regressors, radial-basis interpolants (whose shape parameter is the same bandwidth choice~\cite{rippa1999}), Gaussian-process posteriors, and the local correction fields used to edit or continually adapt a frozen model are all instances of this one object. They share one free parameter---the bandwidth $\sigma$, which sets the resolution at which the field reads the space. Too fine and the field responds only at its sources; too coarse and it bleeds across the space and washes out the structure it was meant to resolve.
+
+How is $\sigma$ chosen? Almost always by search: a grid of candidate values, a random sample, or a cross-validated sweep, each scored by instantiating the field and measuring an outcome. Every such method spends an \emph{outcome signal}---a held-out likelihood, a validation loss, a labelled accuracy---at every candidate, and none of them returns a guarantee about the value it selects.
+
+This paper shows that for a kernel field the search is unnecessary, and that it asks the wrong question. The right question is not ``which $\sigma$ scores best on held-out labels'' but ``which $\sigma$ keeps the field's cross-source interference below a stated budget.'' That question has a closed-form, label-free answer that carries a certificate a labelled search cannot: the \emph{certified frontier} $\sstar=d/\sqrt{2\ln(A/\varepsilon)}$ is the largest bandwidth whose aggregate interference past a radius $d$ is provably below $\varepsilon$, with the effective mass $A$ \emph{measured} from the field, not tuned (Section~\ref{sec:cert}). Its structural core is that this measured mass is nondecreasing in $\sigma$, so a single measurement is provably conservative; and the one interference bound reads at once as a safety, a performance, and an abstention certificate. On three frozen backbones and four further modalities $\sstar$ holds the budget where every label-free rule fails, matches a labelled grid search with zero labels, and re-certifies as the field grows (Sections~\ref{sec:flagship}--\ref{sec:grow})---while, on a GRACE-style LLM editor, it maps exactly where the principle's own assumption runs out (Section~\ref{sec:grace}).
+
+\section{The certificate}\label{sec:cert}
+\paragraph{Kernel fields.} Fix a metric space, taken here as $\Rbb^n$. A \emph{kernel field} is a finite collection $F=(z_i,v_i)_{i=1}^{M}$ of sources $z_i\in\Rbb^n$ carrying signed weights $v_i\in\Rbb$, together with a Gaussian kernel of common bandwidth $\sigma$, written in squared distance as
+\begin{equation}
+\Ksig(t)=\exp\!\big(-t/2\sigma^2\big),\qquad t=\lVert y-z_i\rVert^2 .
+\end{equation}
+The field's value at a query $y$ is the superposition $\sum_i v_i\,\Ksig(\lVert y-z_i\rVert^2)$, optionally normalised. Density estimators, interpolants, and the correction fields of Section~\ref{sec:flagship} are all fields of this form. Write $V_{\max}=\max_i|v_i|$; the certified quantity is invariant under $(v_i,\varepsilon)\mapsto(cv_i,c\varepsilon)$, so we fix $V_{\max}=1$ (the budget $\varepsilon$ is in units of the largest source weight), which holds exactly for the one-hot Parzen vote of Section~\ref{sec:flagship}.
+
+\paragraph{Near and far, and the effective mass.} Around a query $y$, a separation radius $d$ partitions the sources: those within $d$ are \emph{near} (the field should respond to them), those in $\mathcal{F}=\{i:\lVert y-z_i\rVert>d\}$ are \emph{far} (it should leave them undisturbed). The far tail $\mathrm{Tail}_\sigma(y,d)=\sum_{i\in\mathcal{F}}|v_i|\,\Ksig(\lVert y-z_i\rVert^2)$ is the field mass leaking past $d$; the bandwidth question is how large $\sigma$ can be before it exceeds a budget $\varepsilon$. The mass controlling the tail is the number of far sources that \emph{effectively} contribute, measured by the participation ratio of the far weights $\omega_i=\Ksig(\lVert y-z_i\rVert^2)$,
+\begin{equation}
+\Neff(\sigma)=\frac{\big(\sum_{i\in\mathcal{F}}\omega_i\big)^2}{\sum_{i\in\mathcal{F}}\omega_i^2}\in[1,|\mathcal{F}|],
+\end{equation}
+which must be restricted to $\mathcal{F}$: a participation ratio over all sources is dominated by the near mass and does not bound the tail. The field mass acting past the radius is $A=V_{\max}\Neff\ge1$.
+
+\paragraph{Assumptions.} The certificate rests on three explicit conditions. (A1) \emph{Bounded weights}: $|v_i|\le V_{\max}=1$. (A2) \emph{A meaningful near/far radius}: $d>0$ partitions sources into a near set the field should respond to and a far set it should not, so every far source satisfies $\omega_i\le\Ksig(d^2)$. (A3) \emph{Budget below mass}: $0<\varepsilon<A$. It is worth separating three kinds of statement in what follows: the frontier and the safety, stability, and conservativeness results are \emph{proven} under (A1)--(A3); the effective mass $A$ and the tail ratios are \emph{measured} from the field; and the radius $d$ (here the tenth percentile of pairwise centre distances) is a \emph{design choice}---any fixed rule gives a valid certificate.
+
+\paragraph{The safety frontier.} Define the leakage certificate $\mathrm{cert}(A,\sigma,d)=A\,\Ksig(d^2)=A\,e^{-d^2/2\sigma^2}$.
+\begin{proposition}[Safety frontier]\label{prop:frontier}
+For $A>0$, $d>0$, $0<\varepsilon<A$, the equation $\mathrm{cert}(A,\sigma,d)=\varepsilon$ has the unique solution
+\begin{equation}\label{eq:sstar}
+\sstar(A,\varepsilon,d)=\frac{d}{\sqrt{2\ln(A/\varepsilon)}},
+\end{equation}
+and the safe set $\{\sigma>0:\mathrm{cert}\le\varepsilon\}$ is $(0,\sstar]$.
+\end{proposition}
+\noindent\emph{Sketch.} $\mathrm{cert}$ is continuous and strictly increasing in $\sigma$, rising from $0$ to $A$; solving $\mathrm{cert}=\varepsilon$ gives the unique frontier, and monotonicity makes the safe region $(0,\sstar]$ (SI Note~1). The single-source bound extends to the whole tail: because every far source lies beyond $d$, each far kernel is bounded by $\Ksig(d^2)$, and the participation-ratio mass converts this per-source bound into an aggregate one,
+\begin{equation}\label{eq:aggbound}
+\mathrm{Tail}_\sigma(y,d)=\sum_{i\in\mathcal{F}}|v_i|\,\omega_i\le V_{\max}\,\Neff\,\Ksig(d^2)=\mathrm{cert}(A,\sigma,d),
+\end{equation}
+with $A=V_{\max}\Neff$; at $\sigma=\sstar$ the aggregate leakage is at most $\varepsilon$ (SI Note~1).
+
+\paragraph{The measured mass is self-consistent.} The frontier depends on $A=V_{\max}\Neff(\sigma)$, but $\Neff$ itself depends on $\sigma$, so $A$ must be measured at some $\sigma$ and then used to set $\sstar$. We measure it once at the pairwise scale $\sigma_{\mathrm{pair}}=d/\sqrt{2\ln(1/\varepsilon)}$ (the frontier for a single far source) and deploy at $\sstar$. This one-shot procedure is provably conservative:
+\begin{proposition}[Conservativeness]\label{prop:conserv}
+$\Neff(\sigma)$ is nondecreasing in $\sigma$. Consequently $\sstar\le\sigma_{\mathrm{pair}}$, the mass measured at $\sigma_{\mathrm{pair}}$ satisfies $A(\sigma_{\mathrm{pair}})\ge A(\sstar)$, and the true tail at the deployed bandwidth obeys $\mathrm{Tail}_{\sstar}(y,d)\le A(\sigma_{\mathrm{pair}})\,\Ksig[\sstar](d^2)=\varepsilon$.
+\end{proposition}
+\noindent\emph{Sketch.} As $\sigma$ grows the far weights become more uniform, so their participation ratio cannot decrease; since $\sigma_{\mathrm{pair}}\ge\sstar$, measuring the mass there overestimates the deployed mass, and the one-shot certificate holds (SI Note~2). On the three frozen backbones the one-shot mass over-estimates the deployed mass by $2.2$--$4.3\times$ (Fig.~\ref{fig:conserv}a) and the measured one-shot tail is $0.08$--$0.16\,\varepsilon$---strictly inside budget on every network. Iterating $A\!\to\!\sstar\!\to\!A$ converges to a fixed point in six to seven steps (Fig.~\ref{fig:conserv}b), but the one-shot value already certifies.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig5_conservative.png}
+\caption{\textbf{The measured mass is conservative.} (a) Measuring $A$ once at $\sigma_{\mathrm{pair}}$ over-estimates the mass at $\sstar$ by $2.2$--$4.3\times$ on all three backbones, so the one-shot certificate provably holds (Proposition~\ref{prop:conserv}). (b) Iterating the re-measurement converges to a fixed point in $6$--$7$ steps.}
+\label{fig:conserv}
+\end{figure}
+
+\paragraph{The same bound controls the decision.} Consider a field used as a classifier: each class $c$ receives a score $S_c(y)=\sum_{i:\,\mathrm{class}(i)=c} v_i\,\Ksig(\lVert y-z_i\rVert^2)$, with prediction $\arg\max_c S_c$. Splitting each score by the near/far partition, the certificate bounds the far part of every class score by $\varepsilon$ at $\sigma=\sstar$. Let the \emph{local prediction} be $\arg\max_c S_c^{\mathrm{near}}$ and the \emph{local margin} $m(y)$ the gap between the top two near-scores.
+\begin{theorem}[Decision stability]\label{thm:stable}
+If $\sigma\le\sstar$ and $m(y)>2\varepsilon$, the deployed prediction equals the local prediction: the far field cannot change the decision.
+\end{theorem}
+\noindent\emph{Sketch.} Each class score moves by at most $\varepsilon$ under far-field interference, so a two-class gap moves by at most $2\varepsilon$; a near margin above $2\varepsilon$ cannot be flipped (SI Note~3). This is the perturbation bound underlying interval-based certified robustness~\cite{gowal2018}; what is new is \emph{where $\varepsilon$ comes from}---a bandwidth calibrated so the far-field perturbation is provably at most $\varepsilon$, read from geometry without labels. The test uses only near scores and $\varepsilon$, so a deployer flags certified queries per query, and a floor follows:
+\begin{corollary}[Performance floor]\label{cor:floor}
+At $\sigma\le\sstar$, deployed accuracy $\ge$ (near-field accuracy) $-\ \Pr[\,m(y)\le 2\varepsilon\,]$.
+\end{corollary}
+
+\paragraph{One certificate, three readouts.} At $\sigma=\sstar$ every query splits the field as $F(y)=S(y)+T(y)$ with $\lVert T(y)\rVert\le\varepsilon$---which \emph{is} Proposition~\ref{prop:frontier}. Three guarantees follow from that one inequality:
+\begin{itemize}
+\item \emph{Safety}: the deployed response is within $\varepsilon$ of the near-field response, $\lVert F(y)-S(y)\rVert\le\varepsilon$.
+\item \emph{Performance}: if the near margin exceeds $2\varepsilon$, $\arg\max F=\arg\max S$ (Theorem~\ref{thm:stable}).
+\item \emph{Abstention}: if the top near score is $\le2\varepsilon$ the certificate cannot fire, and the query lies outside the field's certified support---a label-free per-query support signal.
+\end{itemize}
+We confirmed the decomposition on $20{,}000$ certified-regime configurations with zero violations, and on a real frozen ResNet-18 field ($20{,}000$ kernels, $10{,}000$ queries) the certified $\sstar$ flags $27\%$ of queries stable with a stable-implies-equal rate of $100.00\%$---zero violations---while the naive bandwidth certifies nothing and its accuracy has collapsed. The certified-stable set sits on the field's accuracy--coverage curve rather than above it; its distinguishing property is that the selection rule is label-free and a priori (SI Note~6). A Lipschitz argument extends the pointwise bound to a ball: the certified radius is genuine but small ($\delta\approx1.6$--$2.2\%$ of inter-query distance), so the per-query certificate carries the deployment claims (SI Note~4).
+
+\section{The flagship: three frozen backbones}\label{sec:flagship}
+The certificate was built for the dense regime, where many sources act at once and the naive single-interferer intuition fails. We reproduce that failure, and its cure, on real frozen deep networks.
+
+\paragraph{Construction.} For each backbone---ResNet-18 ($512$-d), ResNet-50 ($2048$-d), and ViT-B/16 ($768$-d), all ImageNet-pretrained and frozen---we extract the penultimate features of CIFAR-100 and build a correction field of $20{,}000$ balanced kernels ($200$ per class) over the training features, classified by a kernel-weighted (Parzen) vote. The locality radius $d$ is the tenth percentile of pairwise centre distances---pure geometry, no labels. We fix $\varepsilon=0.05$ a priori and compare three bandwidths: the naive single-interferer rule $\sigma_{\mathrm{pair}}=d/\sqrt{2\ln(1/\varepsilon)}$; the certified frontier $\sstar$, whose mass $A=V_{\max}\Neff$ is \emph{measured} once at $\sigma_{\mathrm{pair}}$; and, as an oracle reference, a labelled grid search over a $30$-point log-spaced grid (denoted ``grid''). We also run the classical label-free density bandwidths---Silverman, Scott, and Abramson's square-root law.
+
+\paragraph{Computing $\sstar$ (label-free).} Four steps, no labels: (1) fix $\varepsilon$ and set $d$ to the tenth percentile of pairwise centre distances; (2) form $\sigma_{\mathrm{pair}}=d/\sqrt{2\ln(1/\varepsilon)}$; (3) measure $A=V_{\max}\Neff$ at $\sigma_{\mathrm{pair}}$, averaging the far-mask participation ratio over queries; (4) return $\sstar=d/\sqrt{2\ln(A/\varepsilon)}$. By Proposition~\ref{prop:conserv} measuring at $\sigma_{\mathrm{pair}}\ge\sstar$ over-estimates $A$, so one pass suffices. Full computational specification, grids, and seeds are in SI Note~7 and the repository.
+
+\paragraph{Results.} The pattern is identical across all three architectures (Fig.~\ref{fig:multibb}, Table~\ref{tab:multibb}). The naive bandwidth overshoots the interference budget by three to four orders of magnitude (tail/$\varepsilon$ from $4.9\times10^3$ to $1.0\times10^4$) and collapses the field into a single component spanning \SIrange{97}{100}{\percent} of the centres. The certified $\sstar$ holds the budget (tail/$\varepsilon$ between $0.08$ and $0.16$), dissolves the giant component to \SIrange{4}{7}{\percent}, and recovers accuracy to within \SIrange{1}{5}{} points of the labelled grid-search optimum---using \emph{zero labels}, with $\varepsilon$ fixed across every backbone so the adaptation to $512$, $768$, or $2048$ dimensions happens automatically through the measured mass $A$. The classical selectors are not straw comparators and fail here: Silverman and Scott over-smooth catastrophically (tail/$\varepsilon>10^5$, accuracy \SIrange{27}{64}{\percent}, \emph{below} the naive rule), Abramson's rule worse still (\SIrange{12}{36}{\percent}). The two label-free distance heuristics---the median heuristic and a $k$-nearest-neighbour scale, the natural competitors to $\sstar$---pick a bandwidth $3.6$--$6\times$ larger, which drives tail/$\varepsilon$ to $\sim\!10^5$ and loses $9$--$26$ accuracy points: the quantile $d$ fixes the \emph{scale}, but the logarithmic factor $\sqrt{2\ln(A/\varepsilon)}$ is what turns it into a \emph{safe} one, and only the calibration supplies it. Over five re-samples the certified accuracy varies by $\le0.3$ points on every backbone ($56.3\pm0.2$, $51.1\pm0.2$, $72.2\pm0.2\,\%$), so the ordering is not seed-luck.
+
+\paragraph{The certificate is robust to its own design choices.} Four checks, all label-free, confirm the operating point is not fragile (SI Note~5). The average-$A$ tail is empirically \emph{pointwise}: over $10{,}000$ ResNet-18 queries the maximum tail/$\varepsilon$ is $0.24$, so no query exceeds the budget. Choosing $A$ as an upper quantile of $\Neff$ rather than its mean makes the per-query guarantee strictly a priori at $\le0.2$ points of accuracy, with zero exceedances on all three backbones. The near set is $25$--$47\times$ class-enriched (weighted near purity $0.31/0.25/0.47$ against a chance level of $0.01$), though this is a \emph{plurality}: the certificate guarantees \emph{which} sources decide, not that they decide correctly, and accuracy remains a separately measured outcome. And accuracy stays flat across the $\varepsilon\times$percentile grid ($\le6.7$ points, over a realized $\sstar$ range of only $1.34$--$1.41\times$; SI Note~5) while the certified tail stays in budget---a conjunction that a merely accuracy-tuned dial would not show, since a bandwidth $4$--$6\times$ larger fails catastrophically.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig2_multibackbone.png}
+\caption{\textbf{Certified $\sstar$ across three frozen backbones} (CIFAR-100, $\varepsilon=0.05$, zero labels). (a) Only $\sstar$ holds the interference budget (tail/$\varepsilon<1$); naive and classical KDE bandwidths overshoot by $10^3$--$10^5\times$. (b) Naive and KDE bandwidths collapse the field into one component; $\sstar$ keeps it local. (c) $\sstar$ matches the labelled grid-search accuracy label-free, while the KDE selectors trail badly.}
+\label{fig:multibb}
+\end{figure}
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llrrr}
+\toprule
+Backbone & Method & tail/$\varepsilon$ & giant\% & acc\% \\
+\midrule
+ResNet-18  & naive          & 5068     & 100 & 45.2 \\
+($512$d)   & median heur.\  & 215695   & 100 & 39.6 \\
+           & $k$-NN($7$)    & 120953   & 100 & 40.5 \\
+           & $\sstar$       & 0.08     & 7   & 56.6 \\
+           & grid (labels)  & 0.01     & 4   & 57.2 \\
+           & Silverman      & 125520   & 100 & 40.4 \\
+\midrule
+ResNet-50  & naive          & 4892     & 97  & 33.9 \\
+($2048$d)  & median heur.\  & 210717   & 100 & 25.3 \\
+           & $k$-NN($7$)    & 129605   & 100 & 26.6 \\
+           & $\sstar$       & 0.09     & 7   & 51.0 \\
+           & grid (labels)  & 0.00     & 0   & 56.1 \\
+           & Silverman      & 127973   & 100 & 26.6 \\
+\midrule
+ViT-B/16   & naive          & 9963     & 100 & 65.7 \\
+($768$d)   & median heur.\  & 216464   & 100 & 63.1 \\
+           & $k$-NN($7$)    & 110309   & 100 & 63.7 \\
+           & $\sstar$       & 0.16     & 4   & 72.5 \\
+           & grid (labels)  & 0.00     & 1   & 73.0 \\
+           & Silverman      & 123721   & 100 & 63.6 \\
+\bottomrule
+\end{tabular}
+\caption{Certified $\sstar$ versus naive, median-heuristic, $k$-nearest-neighbour, labelled grid-search, and classical density bandwidths on three frozen backbones. The two label-free distance heuristics---the natural competitors to $\sstar$---pick a bandwidth $3.6$--$6\times$ too large, overshooting the interference budget by roughly five orders of magnitude and losing $9$--$26$ accuracy points; $\sstar$ is the only label-free rule that holds tail\,$\le\varepsilon$ and stays near the labelled grid-search accuracy.}
+\label{tab:multibb}
+\end{table}
+\paragraph{Beyond vision: four non-image modalities.} The certificate is a property of the kernel-field geometry, not of the image domain. We test it on four corpora unrelated to CIFAR (Table~\ref{tab:modality}, Fig.~\ref{fig:modality}), each over five seeds: three text collections---DBpedia, AG-News, Yahoo-Answers---embedded with a frozen sentence transformer ($384$-d), and a raw tabular set (Covertype, $54$-d). The naive bandwidth overshoots by $3.6\times10^2$ to $2.3\times10^3$ while $\sstar$ holds tail/$\varepsilon<1$, and every stable-flagged query has its deployed prediction equal to the intended one ($100\%$ on every corpus). On the three high-dimensional text sets $\sstar$ matches the labelled grid search to within $0.9$ points \emph{label-free}; on the low-dimensional tabular set it trails by $5.8$ points, the same specificity-first behaviour as the public datasets. The pattern the flagship establishes on vision reproduces, with error bars, on text and tabular data alike.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Corpus (dim) & method & tail/$\varepsilon$ & acc\% \\
+\midrule
+DBpedia-14      & $\sstar$      & 0.24   & 92.1\,$\pm$0.6 \\
+text (384)      & grid (lab.)   & ---    & 92.3\,$\pm$0.5 \\
+                & median        & 45609  & 89.0\,$\pm$0.7 \\
+                & $k$-NN($7$)   & 33492  & 89.1\,$\pm$0.6 \\
+\midrule
+AG-News-4       & $\sstar$      & 0.27   & 87.9\,$\pm$1.1 \\
+text (384)      & grid (lab.)   & ---    & 88.0\,$\pm$1.1 \\
+                & median        & 13018  & 85.7\,$\pm$0.8 \\
+                & $k$-NN($7$)   & 10272  & 85.8\,$\pm$0.9 \\
+\midrule
+Yahoo-10        & $\sstar$      & 0.30   & 66.9\,$\pm$0.5 \\
+text (384)      & grid (lab.)   & ---    & 67.8\,$\pm$0.3 \\
+                & median        & 32631  & 65.8\,$\pm$0.4 \\
+                & $k$-NN($7$)   & 24822  & 66.0\,$\pm$0.4 \\
+\midrule
+Covertype-7     & $\sstar$      & 0.10   & 65.0\,$\pm$0.8 \\
+tab.\ (54)      & grid (lab.)   & ---    & 70.8\,$\pm$1.1 \\
+                & median        & 20755  & 53.9\,$\pm$1.5 \\
+                & $k$-NN($7$)   & 102    & 60.0\,$\pm$1.6 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{The certificate generalises across modality} (5 seeds, $\varepsilon=0.05$; naive omitted for space, tail/$\varepsilon$ $3.6\times10^2$--$2.3\times10^3$). $\sstar$ holds tail/$\varepsilon<1$ label-free and matches the labelled grid search within $0.9$ points in high dimension; the $5.8$-point trail on low-dimensional tabular data is the same specificity-first regime as Section~\ref{sec:public}. The label-free median and $k$-NN heuristics overshoot the budget by $10^2$--$10^5\times$ on every corpus (the same failure as Table~\ref{tab:multibb}), with an accuracy cost of $1$--$3$ points on text and up to $11$ on tabular. The stable-implies-equal rate is $100\%$ throughout.}
+\label{tab:modality}
+\end{table}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig7_modality.png}
+\caption{\textbf{Across four non-image modalities.} (a) $\sstar$ (label-free) matches the labelled grid search on the three text sets and trails only on low-dimensional tabular data; error bars are $\pm1$ s.d.\ over five seeds. (b) $\sstar$ holds the interference budget on every corpus, while the naive bandwidth overshoots by two to three orders of magnitude.}
+\label{fig:modality}
+\end{figure}
+
+\section{The budget travels}\label{sec:grow}
+A labelled search fixes $\sigma$ once, on the field it was tuned on. A deployed correction field grows---edits accumulate, classes are added---and the interference structure changes underneath the fixed choice. Because $\sstar$ re-measures $A$, it re-certifies for free; a labelled grid search cannot.
+
+We grow the ResNet-18 field by density, from $3$ to $120$ examples per class ($300$ to $12{,}000$ centres), and fix the labelled grid-search $\sigma=8.83$ once on the sparse initial field. As the field densifies that fixed width becomes an over-smoother: its interference climbs from tail/$\varepsilon=12$ to $502$ (Fig.~\ref{fig:grow}b) and its accuracy reaches only \SI{47.1}{\percent} at full density, while $\sstar$---re-measuring $A$ and shrinking from $6.51$ to $5.41$, holding tail/$\varepsilon$ near $0.10$---reaches \SI{54.1}{\percent}, a $7$-point margin with \emph{zero} labels (Fig.~\ref{fig:grow}a). This margin is against a bandwidth \emph{deliberately frozen} on the sparse field, which is the failure mode we demonstrate---not against a labelled search re-run at each density. Against that per-stage re-tuned oracle $\sstar$ does not dominate; it \emph{tracks} it to within a fraction of a point at every density, label-free. The claim is about adaptivity and the cost of not re-tuning: the labelled search is optimal for the field it saw and silently wrong for the field it is deployed on.
+
+\paragraph{Public datasets.}\label{sec:public} On iris, wine, breast-cancer, and digits the naive bandwidth overshoots by \numrange{2.8}{147}$\times$ while $\sstar$ holds tail/$\varepsilon<1$. These fields are neither dense nor growing, so the labelled grid search is a fair fixed comparator, and $\sstar$ matches it within about two points on three of four (breast-cancer \SI{96.6}{} vs \SI{96.5}{}, digits \SI{97.0}{} vs \SI{97.0}{}, iris \SI{96.3}{} vs \SI{96.3}{\percent}); on wine it trails by \SI{2.2}{} points. $\sstar$ is a specificity-first bandwidth: at fixed low density it delivers parity, and in the dense, growing regime the guarantee turns into an accuracy win.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig6_cvbeating.png}
+\caption{\textbf{The budget travels---and buys accuracy.} A labelled grid-search $\sigma$ is fixed once on the sparse $3$-per-class field. (a) As the field densifies, $\sstar$ (label-free, re-measured) exceeds the fixed grid-search $\sigma$ by $7$ points at full density and tracks a per-stage re-tuned oracle. (b) The fixed bandwidth's interference climbs to $500\times$ the budget while $\sstar$ holds tail\,$\approx0.10\varepsilon$.}
+\label{fig:grow}
+\end{figure}
+
+\section{Related work}\label{sec:related}
+Density-estimation rules---plug-in bandwidths (Silverman, Scott~\cite{silverman1986,scott1992}), Sheather--Jones~\cite{sheather1991}, variable-bandwidth and diffusion selectors~\cite{abramson1982,terrell1992,botev2010}, Lepski's method~\cite{lepski1997}, and scale-space~\cite{lindeberg1994}---target an integrated squared error against a true \emph{density}; we target \emph{interference}, and derive the bandwidth from that objective using no labelled signal. The label-free distance heuristics---the median heuristic~\cite{garreau2017} and local scaling~\cite{zelnikmanor2004}---fix the scale but not the safety factor, and overshoot the budget by roughly five orders of magnitude on the dense fields (Table~\ref{tab:multibb}). Gaussian-process length scales are learned by marginal-likelihood optimisation~\cite{gpml}, which overfits when data are scarce and has motivated uniform error bounds for safety-critical use~\cite{gp_safe2021}; $\sstar$ fixes the scale from geometry and offers an a priori certificate rather than a fitted posterior. Conformal prediction~\cite{vovk2005,angelopoulos2023} and selective classification~\cite{geifman2017} certify \emph{marginal} coverage from a \emph{labelled} calibration set, whereas Corollary~\ref{cor:floor} certifies \emph{per-query decision equality} without labels---both require a representative sample (label-free is not sample-free: $A$ is measured over held-out queries), and the two are complementary, a conformal wrapper calibrating the residual far-field probability our margin leaves uncontrolled. In model editing and continual learning~\cite{yao2023,meng2022,kirkpatrick2017,rebuffi2017}, the interference budget makes the stability--plasticity trade-off quantitative; the closest instance is GRACE~\cite{hartvigsen2023}, whose deferral radius is exactly a near/far partition, tested next.
+
+\section{A boundary: LLM edit scope}\label{sec:grace}
+The correction fields above are well-separated---their near sets are $25$--$47\times$ class-enriched, so (A2) holds. Does the same hold for a GRACE-style editor, whose deferral radius must separate \emph{in-scope} queries (paraphrases of an edit, which should trigger it) from \emph{out-of-scope} neighbourhood prompts (which should not)? We built the test on GPT-2-large over CounterFact: for each of $250$ edits we extract the model's key and the keys of its paraphrase and neighbourhood prompts, and ask whether a radius in key space separates the two. It does not. Across $18$ natural key definitions---six layers $\times$ \{last-token, mean-pool\} residual keys, plus the \texttt{c\_proj} edit-site key at three layers, raw and whitened---the best AUROC is $0.60$, and at the deep layers where GRACE operates it is at or below $0.5$: in-scope paraphrases sit \emph{farther} from the edit key than out-of-scope neighbours, because CounterFact neighbourhood prompts share subject and surface form while paraphrases restate meaning. The near/far partition (A2) is absent in raw LLM key space; semantic edit scope is not a metric ball in activation space, and extending the certificate there would require a learned scope geometry rather than a raw metric, which we leave open. This maps the principle exactly to where its own assumption holds---and states a concrete fact for the editing literature.
+
+\section{Limitations}\label{sec:limits}
+Three boundaries. On pure density recovery there is no near/far structure---every sample is near---so the separation objective is silent; the principle applies to fields that must \emph{discriminate}. $\sstar$ is specificity-first: its guarantee is on interference and accuracy dominance is regime-dependent (parity at fixed low density, an accuracy win only in the dense, growing regime). And conservativeness (Proposition~\ref{prop:conserv}) is stated at fixed radius $d$; $d$ drifts by only $1\%$ over a $40\times$ densification, consistent with $O_p(n^{-1/2})$ quantile convergence (SI Note~5), so re-estimating it per stage corrects a vanishing term, but a field whose class-conditional geometry itself changes would need $d$ re-derived.
+
+\section{Conclusion}
+A kernel field has one honest bandwidth: the largest $\sigma$ whose cross-source interference is provably below a stated budget. It has a closed form, $\sstar=d/\sqrt{2\ln(A/\varepsilon)}$; it needs no labelled search because the mass $A$ is measured from the field; and it carries a certificate that a search cannot---not only that the field is safe, but that every prediction it flags stable is decided by its intended sources. Measuring the mass once is provably conservative, so no tuning is needed, and as the field densifies the same re-measurement exceeds a labelled bandwidth frozen on the sparse early field. The bandwidth question, for a kernel field, is not a search but a calibration: derive the certified bandwidth from geometry, and read off the guarantee.
+
+\paragraph{Data and code availability.} All experiment scripts and released result files will be deposited in an archived repository (\texttt{[repository link]}) with fixed seeds and the exact bandwidth grid for each experiment. Every empirical certificate reported here---including the maximum-tail and zero-exceedance claims---is reproducible end-to-end from these scripts on the stated frozen features.
+
+\paragraph{Author contributions.} R.N. conceived the resolution-calibration framing and developed the empirical and machine-learning program (Sections~\ref{sec:flagship}--\ref{sec:grow}). C.B. is responsible for the analytic core: the safety frontier (Proposition~\ref{prop:frontier}), the conservativeness theorem (Proposition~\ref{prop:conserv}), the decision-stability theorem (Theorem~\ref{thm:stable}), and the uniform-over-region certificate (SI Note~4). Both authors reviewed and approved the final text.
+
+\begin{thebibliography}{99}
+\small
+\bibitem{silverman1986} B. W. Silverman. \emph{Density Estimation for Statistics and Data Analysis.} Chapman \& Hall, 1986.
+\bibitem{scott1992} D. W. Scott. \emph{Multivariate Density Estimation.} Wiley, 1992.
+\bibitem{sheather1991} S. J. Sheather, M. C. Jones. \emph{A Reliable Data-Based Bandwidth Selection Method for Kernel Density Estimation.} J. R. Stat. Soc. B 53:683--690, 1991.
+\bibitem{abramson1982} I. S. Abramson. \emph{On Bandwidth Variation in Kernel Estimates---A Square Root Law.} Ann. Statist. 10(4):1217--1223, 1982.
+\bibitem{terrell1992} G. R. Terrell, D. W. Scott. \emph{Variable Kernel Density Estimation.} Ann. Statist. 20(3):1236--1265, 1992.
+\bibitem{botev2010} Z. I. Botev, J. F. Grotowski, D. P. Kroese. \emph{Kernel Density Estimation via Diffusion.} Ann. Statist. 38(5):2916--2957, 2010.
+\bibitem{lepski1997} O. V. Lepski, E. Mammen, V. G. Spokoiny. \emph{Optimal Spatial Adaptation to Inhomogeneous Smoothness.} Ann. Statist. 25(3):929--947, 1997.
+\bibitem{lindeberg1994} T. Lindeberg. \emph{Scale-Space Theory in Computer Vision.} Kluwer, 1994.
+\bibitem{gpml} C. E. Rasmussen, C. K. I. Williams. \emph{Gaussian Processes for Machine Learning.} MIT Press, 2006.
+\bibitem{gp_safe2021} A. Lederer, J. Umlauft, S. Hirche. \emph{Gaussian Process Uniform Error Bounds with Unknown Hyperparameters for Safety-Critical Applications.} 2021.
+\bibitem{yao2023} S. Yao et al. \emph{Editing Large Language Models: Problems, Methods, and Opportunities.} EMNLP, 2023.
+\bibitem{meng2022} K. Meng, D. Bau, A. Andonian, Y. Belinkov. \emph{Locating and Editing Factual Associations in GPT.} NeurIPS, 2022.
+\bibitem{kirkpatrick2017} J. Kirkpatrick et al. \emph{Overcoming Catastrophic Forgetting in Neural Networks.} PNAS 114(13):3521--3526, 2017.
+\bibitem{rebuffi2017} S.-A. Rebuffi, A. Kolesnikov, G. Sperl, C. H. Lampert. \emph{iCaRL: Incremental Classifier and Representation Learning.} CVPR, 2017.
+\bibitem{vovk2005} V. Vovk, A. Gammerman, G. Shafer. \emph{Algorithmic Learning in a Random World.} Springer, 2005.
+\bibitem{angelopoulos2023} A. N. Angelopoulos, S. Bates. \emph{Conformal Prediction: A Gentle Introduction.} Found. Trends Mach. Learn. 16(4):494--591, 2023.
+\bibitem{geifman2017} Y. Geifman, R. El-Yaniv. \emph{Selective Classification for Deep Neural Networks.} NeurIPS, 2017.
+\bibitem{garreau2017} D. Garreau, W. Jitkrittum, M. Kanagawa. \emph{Large Sample Analysis of the Median Heuristic.} arXiv:1707.07269, 2017.
+\bibitem{zelnikmanor2004} L. Zelnik-Manor, P. Perona. \emph{Self-Tuning Spectral Clustering.} NeurIPS, 2004.
+\bibitem{rippa1999} S. Rippa. \emph{An Algorithm for Selecting a Good Value for the Parameter $c$ in Radial Basis Function Interpolation.} Adv. Comput. Math. 11:193--210, 1999.
+\bibitem{gowal2018} S. Gowal et al. \emph{On the Effectiveness of Interval Bound Propagation for Training Verifiably Robust Models.} arXiv:1810.12715, 2018.
+\bibitem{hartvigsen2023} T. Hartvigsen, S. Sankaranarayanan, H. Palangi, Y. Kim, M. Ghassemi. \emph{Aging with GRACE: Lifelong Model Editing with Discrete Key-Value Adaptors.} NeurIPS, 2023.
+\end{thebibliography}
+\end{document}

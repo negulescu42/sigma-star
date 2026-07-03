@@ -1,0 +1,9 @@
+# build intermediates
+eqimg/
+eqimg_si/
+pg*.png
+sipg*.png
+meta_sigma.png
+__pycache__/
+*.pyc
+.DS_Store
