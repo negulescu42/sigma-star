@@ -1,7 +1,9 @@
 """Independent numerical verification of Propositions 1-2 (SI Note 8).
 Prop 1: participation-ratio tail bound holds (ratio <= 1) over random far configs.
 Prop 2: N_eff(sigma) is monotone nondecreasing, checked at 60-digit precision.
-Reproduces the zero-violation results reported in SI Note 8. seed=20260703."""
+Reproduces the qualitative SI Note 8 result: zero violations for both propositions
+(max tail-ratio ~0.98-0.99, mean ~0.76; exact extremal ratios vary slightly with the
+random draw, the zero-violation conclusion does not). seed=20260703."""
 import numpy as np
 from mpmath import mp, mpf, exp as mpexp
 rng = np.random.default_rng(20260703)

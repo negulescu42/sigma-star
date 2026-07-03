@@ -1,0 +1,341 @@
+{
+  "eps": 0.05,
+  "fields": [
+    {
+      "name": "resnet18",
+      "dim": 512,
+      "d": 26.018503189086914,
+      "A_mean": 12191.1201171875,
+      "sigma_star": 5.223757546897081,
+      "sigma_grid": 4.66125749906939,
+      "acc_star": 0.5664,
+      "acc_grid": 0.5711,
+      "gap_grid_minus_star": 0.47000000000000375,
+      "a2_ambiguity": 0.7620686888694763,
+      "baselines": {
+        "sheather_jones": {
+          "sigma": 0.08412167133826451,
+          "tail_over_eps_mean": 0.0,
+          "tail_over_eps_max": 0.0,
+          "frac_over_1": 0.0,
+          "acc": 0.0103
+        },
+        "gp_ml": {
+          "sigma": 58.31673083891986,
+          "tail_over_eps_mean": 313560.6875,
+          "tail_over_eps_max": 345356.46875,
+          "frac_over_1": 1.0,
+          "acc": 0.3897
+        },
+        "sigma_star": {
+          "sigma": 5.223757546897081,
+          "tail_over_eps_mean": 0.08224993944168091,
+          "tail_over_eps_max": 0.2405925691127777,
+          "frac_over_1": 0.0,
+          "acc": 0.5664
+        },
+        "grid_labels": {
+          "sigma": 4.66125749906939,
+          "tail_over_eps_mean": 0.0026255769189447165,
+          "tail_over_eps_max": 0.008073760196566582,
+          "frac_over_1": 0.0,
+          "acc": 0.5711
+        }
+      }
+    },
+    {
+      "name": "resnet50",
+      "dim": 2048,
+      "d": 50.70808792114258,
+      "A_mean": 11835.9189453125,
+      "sigma_star": 10.19286302593994,
+      "sigma_grid": 6.78715282034413,
+      "acc_star": 0.5157,
+      "acc_grid": 0.5626,
+      "gap_grid_minus_star": 4.689999999999994,
+      "a2_ambiguity": 0.740536630153656,
+      "baselines": {
+        "sheather_jones": {
+          "sigma": 0.025328177963068528,
+          "tail_over_eps_mean": 0.0,
+          "tail_over_eps_max": 0.0,
+          "frac_over_1": 0.0,
+          "acc": 0.0101
+        },
+        "gp_ml": {
+          "sigma": 152.12426376342768,
+          "tail_over_eps_mean": 329947.53125,
+          "tail_over_eps_max": 367464.375,
+          "frac_over_1": 1.0,
+          "acc": 0.2405
+        },
+        "sigma_star": {
+          "sigma": 10.19286302593994,
+          "tail_over_eps_mean": 0.08512140065431595,
+          "tail_over_eps_max": 0.2007429301738739,
+          "frac_over_1": 0.0,
+          "acc": 0.5157
+        },
+        "grid_labels": {
+          "sigma": 6.78715282034413,
+          "tail_over_eps_mean": 6.125194573769477e-09,
+          "tail_over_eps_max": 1.574604446830108e-08,
+          "frac_over_1": 0.0,
+          "acc": 0.5626
+        }
+      }
+    },
+    {
+      "name": "vit",
+      "dim": 768,
+      "d": 36.0826416015625,
+      "A_mean": 16603.783203125,
+      "sigma_star": 7.1557850361479325,
+      "sigma_grid": 5.865643266088591,
+      "acc_star": 0.7214,
+      "acc_grid": 0.7273,
+      "gap_grid_minus_star": 0.5899999999999905,
+      "a2_ambiguity": 0.5298077464103699,
+      "baselines": {
+        "sheather_jones": {
+          "sigma": 0.2058330399825669,
+          "tail_over_eps_mean": 0.0,
+          "tail_over_eps_max": 0.0,
+          "frac_over_1": 0.0,
+          "acc": 0.0102
+        },
+        "gp_ml": {
+          "sigma": 89.1276899644554,
+          "tail_over_eps_mean": 325267.75,
+          "tail_over_eps_max": 360270.375,
+          "frac_over_1": 1.0,
+          "acc": 0.6241
+        },
+        "sigma_star": {
+          "sigma": 7.1557850361479325,
+          "tail_over_eps_mean": 0.15537549555301666,
+          "tail_over_eps_max": 0.3050946891307831,
+          "frac_over_1": 0.0,
+          "acc": 0.7214
+        },
+        "grid_labels": {
+          "sigma": 5.865643266088591,
+          "tail_over_eps_mean": 0.00018456191173754632,
+          "tail_over_eps_max": 0.00043113945866934955,
+          "frac_over_1": 0.0,
+          "acc": 0.7273
+        }
+      }
+    },
+    {
+      "name": "iris",
+      "dim": 4,
+      "d": 0.8102632761001587,
+      "A_mean": 7.425609111785889,
+      "sigma_star": 0.25621065725841147,
+      "sigma_grid": 0.2359740597346402,
+      "acc_star": 0.9777777777777777,
+      "acc_grid": 0.9777777777777777,
+      "gap_grid_minus_star": 0.0,
+      "a2_ambiguity": 0.0992618277668953,
+      "baselines": {
+        "sheather_jones": {
+          "sigma": 0.24220743949666712,
+          "tail_over_eps_mean": 0.13936302065849304,
+          "tail_over_eps_max": 0.40971413254737854,
+          "frac_over_1": 0.0,
+          "acc": 0.9777777777777777
+        },
+        "gp_ml": {
+          "sigma": 0.62358966447502,
+          "tail_over_eps_mean": 93.64049530029297,
+          "tail_over_eps_max": 164.9724578857422,
+          "frac_over_1": 1.0,
+          "acc": 0.9555555555555556
+        },
+        "sigma_star": {
+          "sigma": 0.25621065725841147,
+          "tail_over_eps_mean": 0.28289440274238586,
+          "tail_over_eps_max": 0.7994416356086731,
+          "frac_over_1": 0.0,
+          "acc": 0.9777777777777777
+        },
+        "grid_labels": {
+          "sigma": 0.2359740597346402,
+          "tail_over_eps_mean": 0.09805001318454742,
+          "tail_over_eps_max": 0.2934423089027405,
+          "frac_over_1": 0.0,
+          "acc": 0.9777777777777777
+        }
+      }
+    },
+    {
+      "name": "wine",
+      "dim": 13,
+      "d": 2.881061315536499,
+      "A_mean": 17.968921661376953,
+      "sigma_star": 0.839822095966599,
+      "sigma_grid": 0.2881061315536499,
+      "acc_star": 0.9814814814814815,
+      "acc_grid": 1.0,
+      "gap_grid_minus_star": 1.851851851851849,
+      "a2_ambiguity": 0.44133955240249634,
+      "baselines": {
+        "sheather_jones": {
+          "sigma": 0.29252575890010735,
+          "tail_over_eps_mean": 6.730880119856225e-21,
+          "tail_over_eps_max": 2.0507317959159746e-20,
+          "frac_over_1": 0.0,
+          "acc": 1.0
+        },
+        "gp_ml": {
+          "sigma": 3.9723365884654043,
+          "tail_over_eps_mean": 999.0870971679688,
+          "tail_over_eps_max": 1253.774658203125,
+          "frac_over_1": 1.0,
+          "acc": 0.8333333333333334
+        },
+        "sigma_star": {
+          "sigma": 0.839822095966599,
+          "tail_over_eps_mean": 0.2414044588804245,
+          "tail_over_eps_max": 0.5156040191650391,
+          "frac_over_1": 0.0,
+          "acc": 0.9814814814814815
+        },
+        "grid_labels": {
+          "sigma": 0.2881061315536499,
+          "tail_over_eps_mean": 1.4413010270109545e-21,
+          "tail_over_eps_max": 4.494711232712054e-21,
+          "frac_over_1": 0.0,
+          "acc": 1.0
+        }
+      }
+    },
+    {
+      "name": "breast_cancer",
+      "dim": 30,
+      "d": 3.6556336879730225,
+      "A_mean": 49.75440216064453,
+      "sigma_star": 0.9838616799426997,
+      "sigma_grid": 2.316479679403739,
+      "acc_star": 0.9473684210526315,
+      "acc_grid": 0.9532163742690059,
+      "gap_grid_minus_star": 0.5847953216374324,
+      "a2_ambiguity": 0.33072158694267273,
+      "baselines": {
+        "sheather_jones": {
+          "sigma": 0.19437704119906957,
+          "tail_over_eps_mean": 0.0,
+          "tail_over_eps_max": 0.0,
+          "frac_over_1": 0.0,
+          "acc": 0.8421052631578947
+        },
+        "gp_ml": {
+          "sigma": 3.765700854877878,
+          "tail_over_eps_mean": 1398.409912109375,
+          "tail_over_eps_max": 2253.498779296875,
+          "frac_over_1": 0.9941520467836257,
+          "acc": 0.8888888888888888
+        },
+        "sigma_star": {
+          "sigma": 0.9838616799426997,
+          "tail_over_eps_mean": 0.2159663885831833,
+          "tail_over_eps_max": 0.6029264330863953,
+          "frac_over_1": 0.0,
+          "acc": 0.9473684210526315
+        },
+        "grid_labels": {
+          "sigma": 2.316479679403739,
+          "tail_over_eps_mean": 311.751953125,
+          "tail_over_eps_max": 616.150146484375,
+          "frac_over_1": 0.9883040935672515,
+          "acc": 0.9532163742690059
+        }
+      }
+    },
+    {
+      "name": "digits",
+      "dim": 64,
+      "d": 7.531374454498291,
+      "A_mean": 468.93634033203125,
+      "sigma_star": 1.760917108126873,
+      "sigma_grid": 1.0080559426616225,
+      "acc_star": 0.9703703703703703,
+      "acc_grid": 0.9722222222222222,
+      "gap_grid_minus_star": 0.18518518518518823,
+      "a2_ambiguity": 0.15296147763729095,
+      "baselines": {
+        "sheather_jones": {
+          "sigma": 0.08552997385901377,
+          "tail_over_eps_mean": 0.0,
+          "tail_over_eps_max": 0.0,
+          "frac_over_1": 0.0,
+          "acc": 0.1
+        },
+        "gp_ml": {
+          "sigma": 10.384074141603678,
+          "tail_over_eps_mean": 13401.21875,
+          "tail_over_eps_max": 15326.388671875,
+          "frac_over_1": 0.9944444444444445,
+          "acc": 0.8518518518518519
+        },
+        "sigma_star": {
+          "sigma": 1.760917108126873,
+          "tail_over_eps_mean": 0.11985912919044495,
+          "tail_over_eps_max": 0.31734055280685425,
+          "frac_over_1": 0.0,
+          "acc": 0.9703703703703703
+        },
+        "grid_labels": {
+          "sigma": 1.0080559426616225,
+          "tail_over_eps_mean": 2.384829278501144e-10,
+          "tail_over_eps_max": 7.633533805062598e-10,
+          "frac_over_1": 0.0,
+          "acc": 0.9722222222222222
+        }
+      }
+    },
+    {
+      "name": "covertype",
+      "dim": 54,
+      "d": 6.701530933380127,
+      "A_mean": 350.5146179199219,
+      "sigma_star": 1.5924340057500244,
+      "sigma_grid": 7.607827154022673,
+      "acc_star": 0.5145,
+      "acc_grid": 0.5778333333333333,
+      "gap_grid_minus_star": 6.333333333333336,
+      "a2_ambiguity": 0.025219010189175606,
+      "baselines": {
+        "sheather_jones": {
+          "sigma": 0.05279344762205672,
+          "tail_over_eps_mean": 0.0,
+          "tail_over_eps_max": 0.0,
+          "frac_over_1": 0.0,
+          "acc": 0.4053333333333333
+        },
+        "gp_ml": {
+          "sigma": 1.7709596685817481,
+          "tail_over_eps_mean": 0.9276289343833923,
+          "tail_over_eps_max": 2.2305872440338135,
+          "frac_over_1": 0.6015,
+          "acc": 0.5123333333333333
+        },
+        "sigma_star": {
+          "sigma": 1.5924340057500244,
+          "tail_over_eps_mean": 0.1356877088546753,
+          "tail_over_eps_max": 0.34536227583885193,
+          "frac_over_1": 0.0,
+          "acc": 0.5145
+        },
+        "grid_labels": {
+          "sigma": 7.607827154022673,
+          "tail_over_eps_mean": 8599.4423828125,
+          "tail_over_eps_max": 11194.9853515625,
+          "frac_over_1": 0.9996666666666667,
+          "acc": 0.5778333333333333
+        }
+      }
+    }
+  ]
+}
