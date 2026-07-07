@@ -63,6 +63,16 @@ For the ordering, note it does \emph{not} depend on the measured value of $A$. T
 \end{proof}
 
 \paragraph{Fixed-point interpretation.} The one-shot value already certifies, so no iteration is required. If one nonetheless iterates the re-measurement $A\!\to\!\sstar(A)\!\to\!A$, each step deploys at a smaller bandwidth and re-measures a smaller mass; the map is monotone and bounded below by $A(\sstar)\ge1$, so it converges to the self-consistent fixed point where the measurement and deployment bandwidths coincide. Empirically this takes six to seven steps, but every intermediate value is already a valid certificate.
+
+\paragraph{General kernels: the monotonicity is not Gaussian.} The proof above used the Gaussian form $w_i=\exp(-r_i^2 u)$ only through the sign of $\partial_u w_i$; the conclusion holds for a whole class of tails. Let the kernel be $K(r/\sigma)$ for a positive, strictly decreasing $K$, and write $\varphi=\ln K$. For any far pair $r_i<r_j$ the weight ratio is $w_j/w_i=K(r_j/\sigma)/K(r_i/\sigma)$, and
+\[
+\frac{d}{d\sigma}\ln\frac{w_j}{w_i}=\frac1\sigma\bigl[\psi(r_i/\sigma)-\psi(r_j/\sigma)\bigr],\qquad \psi(x):=x\,\varphi'(x)=\frac{x\,K'(x)}{K(x)},
+\]
+the \emph{elasticity} of $K$. If $\psi$ is non-increasing---equivalently, $\ln K$ is concave in $\ln x$---then $\psi(r_i/\sigma)\ge\psi(r_j/\sigma)$, so every pairwise ratio $w_j/w_i\le1$ rises toward unity as $\sigma$ grows: the far-weight vector becomes more uniform in the majorisation order. Since $\Neff=(\sum w_i)^2/\sum w_i^2$ is symmetric and Schur-concave, it is nondecreasing under this majorisation. Hence:
+\begin{proposition}[Conservativeness, general tail]\label{prop:conserv-gen}
+If $K$ is positive, strictly decreasing, and $\ln K(x)$ is concave in $\ln x$, then $\Neff(\sigma)$ is nondecreasing in $\sigma$, and the one-shot mass measurement is conservative exactly as in the Gaussian case.
+\end{proposition}
+\noindent The Gaussian ($\psi=-x^2$), Laplace ($\psi=-x$), stretched-exponential ($\psi=-\tfrac12 x^{1/2}$), Cauchy ($\psi=-2x^2/(1+x^2)$), and inverse-power ($\psi=-p\,x^p/(1+x^p)$) tails all satisfy the elasticity condition, and we confirm zero monotonicity violations for each on the four public datasets over a $30$-point bandwidth grid. The conservativeness is therefore a property of monotone, log-concave-in-log-distance kernels, not of the Gaussian tail.
 \section{Supplementary Note 3 --- Decision stability and performance floor}
 \begin{theorem}[Decision stability]
 If $\sigma\le\sstar$ and the local margin $m(y)>2\varepsilon$, then the deployed prediction equals the local prediction: the far field cannot change the decision.
