@@ -1,0 +1,20 @@
+{
+ "EPS": 0.05,
+ "tau": 1.0,
+ "model": "protonet-omniglot-conv4-64d",
+ "accuracy": 0.9149999999999998,
+ "identity_max": 4.172325134277344e-07,
+ "tail_star": {
+  "mean": 0.24805600170334,
+  "viol": 0,
+  "n": 12000
+ },
+ "tail_4star": {
+  "mean": 561.8029018098991,
+  "viol": 12000,
+  "n": 12000
+ },
+ "normfar_star_mean": 0.0825237780138687,
+ "normfar_4star_mean": 0.86169741800482,
+ "n_queries": 12000
+}
