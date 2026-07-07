@@ -1,0 +1,90 @@
+[
+  {
+    "dataset": "iris",
+    "tail": "gauss",
+    "sstar": 0.2803741663883002,
+    "tail_over_eps_mean": 0.5465100480148641,
+    "tail_over_eps_max": 2.0955116116643233,
+    "acc_star": 0.9666666666666667,
+    "acc_grid": 0.9666666666666667,
+    "gap": 0.0,
+    "mono_viol": 0
+  },
+  {
+    "dataset": "iris",
+    "tail": "lapl",
+    "sstar": 0.1445803983795086,
+    "tail_over_eps_mean": 0.24266728274585472,
+    "tail_over_eps_max": 0.718109943955661,
+    "acc_star": 0.9666666666666667,
+    "acc_grid": 0.9666666666666667,
+    "gap": 0.0,
+    "mono_viol": 0
+  },
+  {
+    "dataset": "wine",
+    "tail": "gauss",
+    "sstar": 0.9059968752248402,
+    "tail_over_eps_mean": 0.5402430675688278,
+    "tail_over_eps_max": 1.1538751588214626,
+    "acc_star": 0.9444444444444444,
+    "acc_grid": 0.9861111111111112,
+    "gap": 0.04166666666666674,
+    "mono_viol": 0
+  },
+  {
+    "dataset": "wine",
+    "tail": "lapl",
+    "sstar": 0.4271803009978311,
+    "tail_over_eps_mean": 0.1704656532897162,
+    "tail_over_eps_max": 0.34975335227136306,
+    "acc_star": 0.9583333333333334,
+    "acc_grid": 0.9861111111111112,
+    "gap": 0.02777777777777779,
+    "mono_viol": 0
+  },
+  {
+    "dataset": "breast-cancer",
+    "tail": "gauss",
+    "sstar": 1.0075834519698263,
+    "tail_over_eps_mean": 0.46288771654552363,
+    "tail_over_eps_max": 1.3122971375731873,
+    "acc_star": 0.956140350877193,
+    "acc_grid": 0.9649122807017544,
+    "gap": 0.00877192982456143,
+    "mono_viol": 0
+  },
+  {
+    "dataset": "breast-cancer",
+    "tail": "lapl",
+    "sstar": 0.45575286053433595,
+    "tail_over_eps_mean": 0.16944643275040194,
+    "tail_over_eps_max": 0.4119863310855998,
+    "acc_star": 0.956140350877193,
+    "acc_grid": 0.9605263157894737,
+    "gap": 0.004385964912280715,
+    "mono_viol": 0
+  },
+  {
+    "dataset": "digits",
+    "tail": "gauss",
+    "sstar": 1.8588262750650544,
+    "tail_over_eps_mean": 0.29598963217568336,
+    "tail_over_eps_max": 0.746450553426817,
+    "acc_star": 0.9707927677329624,
+    "acc_grid": 0.9735744089012517,
+    "gap": 0.0027816411682892728,
+    "mono_viol": 0
+  },
+  {
+    "dataset": "digits",
+    "tail": "lapl",
+    "sstar": 0.7856262727031889,
+    "tail_over_eps_mean": 0.16028199693804526,
+    "tail_over_eps_max": 0.32018342891759977,
+    "acc_star": 0.9680111265646731,
+    "acc_grid": 0.9735744089012517,
+    "gap": 0.0055632823365785455,
+    "mono_viol": 0
+  }
+]

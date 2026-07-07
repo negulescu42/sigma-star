@@ -324,7 +324,14 @@ for k,b in enumerate(blocks):
 
 # ---------- 5. table (per-block: each \begin{table} parses its OWN tabular + caption) ----------
 def clean(c):
-    c=re.sub(r"\\textbf\{([^}]*)\}",r"\1",c).replace("\\%","%").replace("$","")
+    c=re.sub(r"\\textbf\{([^}]*)\}",r"\1",c).replace("\\%","%")
+    # map known math tokens to glyphs BEFORE stripping residual commands,
+    # else e.g. $\sstar$ -> blank and tail/$\varepsilon$ -> "tail/"
+    for _a,_b in [("\\sstar","σ*"),("\\smax","σmax"),("\\varepsilon","ε"),("\\epsilon","ε"),
+                  ("\\times","×"),("\\leq","≤"),("\\le","≤"),("\\geq","≥"),("\\ge","≥"),
+                  ("\\Neff","Neff"),("\\pm","±")]:
+        c=c.replace(_a,_b)
+    c=c.replace("$","")
     c=re.sub(r"\\[a-zA-Z]+","",c).replace("{","").replace("}","").replace("\\","")
     return re.sub(r"\s+"," ",c).strip()
 def parse_table(tbltxt):
@@ -438,7 +445,7 @@ _bh=0.0
 for _fl in _bannerlist():
     _w,_h=_fl.wrap(_banW,PH)
     _bh+=_h+_fl.getSpaceBefore()+_fl.getSpaceAfter()
-banner_h=min(PH-2*MARGIN-40*mm, _bh+1*mm)
+banner_h=min(PH-2*MARGIN-40*mm, _bh+5*mm)
 f_ban=Frame(MARGIN,PH-MARGIN-banner_h,PW-2*MARGIN,banner_h,id="ban",showBoundary=0,leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0)
 col_y=MARGIN+4*mm; col_h1=PH-MARGIN-banner_h-col_y+5*mm
 f_l1=Frame(MARGIN,col_y,COLW,col_h1,id="l1",leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0)

@@ -1,0 +1,82 @@
+[
+  {
+    "dataset": "iris",
+    "sstar": {
+      "del_shift_max": 0.03165858243057762,
+      "del_over_eps_max": 0.6331716486115524,
+      "cert_frac": 0.9166666666666666,
+      "flip_del_cert": 0.0,
+      "flip_cor_cert": 0.0,
+      "n_cert": 55
+    },
+    "d": 0.8236454703949467,
+    "wide3x": {
+      "del_shift_max": 8.14656752509308,
+      "del_over_eps_max": 162.93135050186157,
+      "cert_frac": 0.9833333333333333,
+      "flip_del_cert": 0.05084745762711865,
+      "flip_cor_cert": 0.4745762711864407,
+      "n_cert": 59
+    }
+  },
+  {
+    "dataset": "wine",
+    "sstar": {
+      "del_shift_max": 0.02042682399678604,
+      "del_over_eps_max": 0.4085364799357208,
+      "cert_frac": 0.5833333333333334,
+      "flip_del_cert": 0.0,
+      "flip_cor_cert": 0.0,
+      "n_cert": 42
+    },
+    "d": 2.8675697051668303,
+    "wide3x": {
+      "del_shift_max": 12.745257187443304,
+      "del_over_eps_max": 254.90514374886607,
+      "cert_frac": 0.8611111111111112,
+      "flip_del_cert": 0.016129032258064516,
+      "flip_cor_cert": 0.9193548387096774,
+      "n_cert": 62
+    }
+  },
+  {
+    "dataset": "breast-cancer",
+    "sstar": {
+      "del_shift_max": 0.025542546384933917,
+      "del_over_eps_max": 0.5108509276986783,
+      "cert_frac": 0.618421052631579,
+      "flip_del_cert": 0.0,
+      "flip_cor_cert": 0.0,
+      "n_cert": 141
+    },
+    "d": 3.548826242311839,
+    "wide3x": {
+      "del_shift_max": 47.322166449963525,
+      "del_over_eps_max": 946.4433289992704,
+      "cert_frac": 0.8771929824561403,
+      "flip_del_cert": 0.065,
+      "flip_cor_cert": 0.745,
+      "n_cert": 200
+    }
+  },
+  {
+    "dataset": "digits",
+    "sstar": {
+      "del_shift_max": 0.003594268858683386,
+      "del_over_eps_max": 0.07188537717366772,
+      "cert_frac": 0.808066759388039,
+      "flip_del_cert": 0.0,
+      "flip_cor_cert": 0.0,
+      "n_cert": 581
+    },
+    "d": 7.546990417615941,
+    "wide3x": {
+      "del_shift_max": 29.626437259838585,
+      "del_over_eps_max": 592.5287451967716,
+      "cert_frac": 0.972183588317107,
+      "flip_del_cert": 0.05150214592274678,
+      "flip_cor_cert": 0.9570815450643777,
+      "n_cert": 699
+    }
+  }
+]
