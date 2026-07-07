@@ -65,9 +65,9 @@ For the ordering, note it does \emph{not} depend on the measured value of $A$. T
 \paragraph{Fixed-point interpretation.} The one-shot value already certifies, so no iteration is required. If one nonetheless iterates the re-measurement $A\!\to\!\sstar(A)\!\to\!A$, each step deploys at a smaller bandwidth and re-measures a smaller mass; the map is monotone and bounded below by $A(\sstar)\ge1$, so it converges to the self-consistent fixed point where the measurement and deployment bandwidths coincide. Empirically this takes six to seven steps, but every intermediate value is already a valid certificate.
 
 \paragraph{General kernels: the monotonicity is not Gaussian.} The proof above used the Gaussian form $w_i=\exp(-r_i^2 u)$ only through the sign of $\partial_u w_i$; the conclusion holds for a whole class of tails. Let the kernel be $K(r/\sigma)$ for a positive, strictly decreasing $K$, and write $\varphi=\ln K$. For any far pair $r_i<r_j$ the weight ratio is $w_j/w_i=K(r_j/\sigma)/K(r_i/\sigma)$, and
-\[
-\frac{d}{d\sigma}\ln\frac{w_j}{w_i}=\frac1\sigma\bigl[\psi(r_i/\sigma)-\psi(r_j/\sigma)\bigr],\qquad \psi(x):=x\,\varphi'(x)=\frac{x\,K'(x)}{K(x)},
-\]
+\begin{equation}
+\frac{d}{d\sigma}\ln\frac{w_j}{w_i}=\frac{1}{\sigma}\left[\psi(r_i/\sigma)-\psi(r_j/\sigma)\right],\qquad \psi(x):=x\,\varphi'(x)=\frac{x\,K'(x)}{K(x)},
+\end{equation}
 the \emph{elasticity} of $K$. If $\psi$ is non-increasing---equivalently, $\ln K$ is concave in $\ln x$---then $\psi(r_i/\sigma)\ge\psi(r_j/\sigma)$, so every pairwise ratio $w_j/w_i\le1$ rises toward unity as $\sigma$ grows: the far-weight vector becomes more uniform in the majorisation order. Since $\Neff=(\sum w_i)^2/\sum w_i^2$ is symmetric and Schur-concave, it is nondecreasing under this majorisation. Hence:
 \begin{proposition}[Conservativeness, general tail]\label{prop:conserv-gen}
 If $K$ is positive, strictly decreasing, and $\ln K(x)$ is concave in $\ln x$, then $\Neff(\sigma)$ is nondecreasing in $\sigma$, and the one-shot mass measurement is conservative exactly as in the Gaussian case.
@@ -148,5 +148,18 @@ The abstention readout gives a label-free, per-query support signal: a query wit
 \caption{\textbf{Independent verification of the two load-bearing results.} (a) Tail-bound tightness over $20{,}000$ random far configurations: the ratio stays below one everywhere (max $0.98$, zero violations), nearing one only as $\Neff/|\mathcal{F}|\!\to\!1$. (b) $\Neff(\sigma)$ is monotone nondecreasing (Proposition~2), zero violations at $60$-digit precision over $3{,}000$ trials.}
 \label{fig:verif}
 \end{figure}
+
+\section{Supplementary Note 9 --- Attention as a Gaussian kernel field}\label{si:attention}
+\paragraph{The reduction.} Single-head softmax attention assigns query $q$ the weight $a_i=\mathrm{softmax}_i(\langle q,k_i\rangle/\tau)$ over keys $\{k_i\}$. The polarisation identity $\langle q,k_i\rangle=\tfrac12(\lVert q\rVert^2+\lVert k_i\rVert^2-\lVert q-k_i\rVert^2)$ gives
+\begin{equation}
+\exp\big(\langle q,k_i\rangle/\tau\big)=e^{\lVert q\rVert^2/2\tau}\cdot e^{\lVert k_i\rVert^2/2\tau}\cdot e^{-\lVert q-k_i\rVert^2/2\tau}.
+\end{equation}
+The three factors are, in order, a query-only term $e^{\lVert q\rVert^2/2\tau}$, a per-key source weight $v_i=e^{\lVert k_i\rVert^2/2\tau}$, and the Gaussian kernel $K_\sigma(\lVert q-k_i\rVert^2)$ with $\sigma^2=\tau$. The query-only factor is independent of $i$ and cancels in the softmax normalisation. Hence
+\begin{equation}
+a_i=\frac{v_i\,K_\sigma(\lVert q-k_i\rVert^2)}{\sum_j v_j\,K_\sigma(\lVert q-k_j\rVert^2)},\qquad v_i=e^{\lVert k_i\rVert^2/2\tau},\quad \sigma=\sqrt{\tau},
+\end{equation}
+which is exactly the normalised Gaussian kernel field of the main text with source weights $v_i$ and bandwidth $\sigma=\sqrt\tau$. The safety frontier (Proposition~1) and conservativeness (Proposition~2) apply unchanged, with certified temperature $\tau^*=(\sstar)^2=d^2/(2\ln(A/\varepsilon))$ and $A=V_{\max}\Neff$, $V_{\max}=\max_i v_i$.
+\paragraph{Scope: bounded versus unbounded weights.} Assumption (A1) sets $V_{\max}=1$; attention's $v_i=e^{\lVert k_i\rVert^2/2\tau}$ are unbounded, so $V_{\max}$ enters the mass $A$ as a measured quantity rather than being normalised away. The interference-tail certificate (Proposition~1, stated in units of $V_{\max}$) is therefore what transfers; the far-set locality readout (Corollary~2), which compares to the full output magnitude, is $\varepsilon$-tight only when the keys are norm-bounded---the case $\lVert k_i\rVert\equiv$ const, where $v_i$ is constant and attention is a \emph{pure} Gaussian field. When key norms vary, $\tau^*$ still bounds the far interference tail but the normalised far-attention mass is looser, decreasing in $\tau$ but not to $\varepsilon$.
+\paragraph{Empirical confirmation.} On the real query/key vectors of every sampled head of BERT-base and GPT-2 over long contexts ($\sim\!360$ keys/head), the identity holds to the models' float32 precision ($<10^{-4}$ over all heads; it is an algebraic equality, exact up to floating-point rounding), and at $\tau^*$ the certified far-key tail $\mathrm{Tail}/V_{\max}$ stays below $\varepsilon$ across $\sim\!35{,}000$ queries per model with zero violations, rising $18$--$33\times$ over budget at $4\tau^*$ (Fig.~6 of the main text; script and outputs in the repository).
 
 \end{document}

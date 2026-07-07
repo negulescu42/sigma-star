@@ -1,0 +1,42 @@
+{
+  "eps": 0.05,
+  "identity_max_diff": 1.1102230246251565e-16,
+  "models": {
+    "bert-base-uncased": {
+      "nL": 12,
+      "nH": 12,
+      "d_head": 64,
+      "n_head_samples": 96,
+      "real_qk_identity_max_diff": 4.470348358154297e-06,
+      "mean_keys": 363.25,
+      "tailratio_star_mean": 0.00015864465789175956,
+      "tailratio_star_p95": 0.0008746684460031943,
+      "tailratio_star_headmax": 0.005255320080728914,
+      "tailratio_wide_mean": 33.20514794932284,
+      "normfar_star_mean": 0.351984646073689,
+      "normfar_star_p95": 0.7195151737398029,
+      "normfar_wide_mean": 0.8020448422398324,
+      "tail_violations": 0,
+      "total_q": 34872,
+      "frac_heads_tailratio_below1": 1.0
+    },
+    "gpt2": {
+      "nL": 12,
+      "nH": 12,
+      "d_head": 64,
+      "n_head_samples": 96,
+      "real_qk_identity_max_diff": 3.376603126525879e-05,
+      "mean_keys": 363.125,
+      "tailratio_star_mean": 1.9984117583362772e-05,
+      "tailratio_star_p95": 8.247531545878893e-05,
+      "tailratio_star_headmax": 0.00197685958265677,
+      "tailratio_wide_mean": 18.105380428842608,
+      "normfar_star_mean": 0.6194347319426877,
+      "normfar_star_p95": 0.897981455528661,
+      "normfar_wide_mean": 0.841185263384137,
+      "tail_violations": 0,
+      "total_q": 34860,
+      "frac_heads_tailratio_below1": 1.0
+    }
+  }
+}
