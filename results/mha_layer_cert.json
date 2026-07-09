@@ -1,0 +1,69 @@
+{
+  "eps": 0.05,
+  "model": "bert-base-uncased",
+  "nL": 12,
+  "nH": 12,
+  "d_head": 64,
+  "layers": {
+    "0": {
+      "n_ctx": 6,
+      "mean_far_mass": 0.3801777811077705,
+      "max_far_mass": 1.0000000000000009,
+      "actual_dO_mean": 5.012618884273597,
+      "actual_dO_max": 10.871712933739687,
+      "bound_mean": 227.18839895935096,
+      "bound_holds_all": true,
+      "bound_meas_holds_all": true,
+      "looseness_median": 46.8444876174541,
+      "looseness_meas_median": 12.494722953282192,
+      "Wo_norm": 2.8282482624053955,
+      "Wv_head_norm_mean": 1.1268666287263234,
+      "rel_pert_median": 0.27884843469474835
+    },
+    "3": {
+      "n_ctx": 6,
+      "mean_far_mass": 0.23582739011115064,
+      "max_far_mass": 1.0000000000000002,
+      "actual_dO_mean": 2.387287385663987,
+      "actual_dO_max": 7.946834170086829,
+      "bound_mean": 158.0067866559939,
+      "bound_holds_all": true,
+      "bound_meas_holds_all": true,
+      "looseness_median": 69.99462958565228,
+      "looseness_meas_median": 17.744860826267466,
+      "Wo_norm": 2.514615297317505,
+      "Wv_head_norm_mean": 1.3484629690647125,
+      "rel_pert_median": 0.13888651107407854
+    },
+    "6": {
+      "n_ctx": 6,
+      "mean_far_mass": 0.33395408801032483,
+      "max_far_mass": 0.9771150800654487,
+      "actual_dO_mean": 2.6541330358812956,
+      "actual_dO_max": 6.393512116797386,
+      "bound_mean": 176.67576804969153,
+      "bound_holds_all": true,
+      "bound_meas_holds_all": true,
+      "looseness_median": 69.07096063357453,
+      "looseness_meas_median": 19.44173001100252,
+      "Wo_norm": 2.4233410358428955,
+      "Wv_head_norm_mean": 1.2980367143948872,
+      "rel_pert_median": 0.12542277655527476
+    },
+    "9": {
+      "n_ctx": 6,
+      "mean_far_mass": 0.28282320737035843,
+      "max_far_mass": 1.0000000000000002,
+      "actual_dO_mean": 3.563880762592802,
+      "actual_dO_max": 12.995076975954037,
+      "bound_mean": 199.00100344095645,
+      "bound_holds_all": true,
+      "bound_meas_holds_all": true,
+      "looseness_median": 62.84531014073203,
+      "looseness_meas_median": 17.276679393390165,
+      "Wo_norm": 2.708677291870117,
+      "Wv_head_norm_mean": 1.2570145179828007,
+      "rel_pert_median": 0.16085631095337735
+    }
+  }
+}
