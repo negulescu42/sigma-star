@@ -15,16 +15,16 @@ tex=open("rcp_si.tex").read()
 
 # ---------- 0. classical scientific-plate palette ----------
 # minimalist, old-school, serif, Newtonian. Restrained contrast, semantic accents only.
-PARCH   = "#F5F0E6"   # parchment ivory ground
-INK     = "#0E0E0E"   # near-black ink (body)
-CHARCOAL= "#2C2A27"   # section headings
-WARMGRAY= "#77736A"   # footer / secondary
-PALEGRAY= "#D8D0C0"   # hairlines, figure keylines
-SEPIA   = "#A97A3B"   # accent: sigma* frontier / structural rules
-GREENGRAY="#4F6F61"   # accent: safe / near
-REDBROWN= "#8E4B3F"   # accent: interference / far
-THMTINT = "#EFE8D6"   # theorem block ground (parchment tint)
-PROOFINK= "#55524C"   # proof body
+PARCH   = "#FFFFFF"   # white ground (monochrome)
+INK     = "#000000"   # black ink (body)
+CHARCOAL= "#000000"   # section headings (black)
+WARMGRAY= "#666666"   # footer / secondary (neutral gray)
+PALEGRAY= "#BEBEBE"   # hairlines, figure keylines (neutral gray)
+SEPIA   = "#000000"   # accent -> black (structural rules / labels)
+GREENGRAY="#000000"   # near -> black
+REDBROWN= "#666666"   # far -> mid gray
+THMTINT = "#F0F0F0"   # theorem block ground (very light neutral)
+PROOFINK= "#333333"   # proof body (dark gray)
 
 # ---------- 1. render equations ----------
 eqs=re.findall(r"\\begin\{equation\}(.*?)\\end\{equation\}", tex, re.S)
@@ -185,22 +185,22 @@ PW,PH=A4; MARGIN=16*mm; COLGAP=7*mm; COLW=(PW-2*MARGIN-COLGAP)/2
 S=getSampleStyleSheet()
 _INK=colors.HexColor(INK); _CHAR=colors.HexColor(CHARCOAL); _SEP=colors.HexColor(SEPIA)
 _GG=colors.HexColor(GREENGRAY); _WG=colors.HexColor(WARMGRAY)
-body_st=ParagraphStyle("body",parent=S["Normal"],fontName="Times-Roman",fontSize=8.6,leading=11.4,alignment=TA_JUSTIFY,spaceAfter=3,textColor=_INK)
+body_st=ParagraphStyle("body",parent=S["Normal"],fontName="Times-Roman",fontSize=9.2,leading=11.4,alignment=TA_JUSTIFY,spaceAfter=3,textColor=_INK)
 # section headings: small-caps feel via tracked bold charcoal + a thin sepia rule above (drawn in flowable)
-h1_st=ParagraphStyle("h1",parent=body_st,fontName="Times-Bold",fontSize=10,leading=12.5,spaceBefore=12,spaceAfter=3.5,textColor=_CHAR,tracking=1.2)
-h2_st=ParagraphStyle("h2",parent=body_st,fontName="Times-Bold",fontSize=9.2,spaceBefore=7,spaceAfter=2.5,textColor=_CHAR,tracking=0.8)
-h3_st=ParagraphStyle("h3",parent=body_st,fontName="Times-BoldItalic",fontSize=8.8,spaceBefore=5,spaceAfter=1.5,textColor=colors.HexColor("#3A3733"))
-thm_st=ParagraphStyle("thm",parent=body_st,fontName="Times-Italic",fontSize=8.6,leading=11.2,leftIndent=7,rightIndent=3,spaceBefore=3,spaceAfter=3,backColor=colors.HexColor(THMTINT),borderColor=_SEP,borderWidth=0,borderPadding=(4,4,4,7))
-proof_st=ParagraphStyle("proof",parent=body_st,fontSize=8.3,leading=10.7,textColor=colors.HexColor(PROOFINK),spaceAfter=3)
-cap_st=ParagraphStyle("cap",parent=body_st,fontSize=7.6,leading=9.6,textColor=colors.HexColor("#3A3733"),spaceBefore=3,spaceAfter=6,alignment=TA_LEFT)
-bib_st=ParagraphStyle("bib",parent=body_st,fontSize=7.4,leading=9,spaceAfter=2,leftIndent=6,firstLineIndent=-6,textColor=colors.HexColor("#3A3733"))
+h1_st=ParagraphStyle("h1",parent=body_st,fontName="Times-Bold",fontSize=10.8,leading=13,spaceBefore=12,spaceAfter=3.5,textColor=_CHAR,tracking=1.2)
+h2_st=ParagraphStyle("h2",parent=body_st,fontName="Times-Bold",fontSize=9.9,spaceBefore=7,spaceAfter=2.5,textColor=_CHAR,tracking=0.8)
+h3_st=ParagraphStyle("h3",parent=body_st,fontName="Times-BoldItalic",fontSize=9.4,spaceBefore=5,spaceAfter=1.5,textColor=colors.HexColor("#000000"))
+thm_st=ParagraphStyle("thm",parent=body_st,fontName="Times-Italic",fontSize=9.2,leading=11.2,leftIndent=7,rightIndent=3,spaceBefore=3,spaceAfter=3,backColor=colors.HexColor(THMTINT),borderColor=_SEP,borderWidth=0,borderPadding=(4,4,4,7))
+proof_st=ParagraphStyle("proof",parent=body_st,fontSize=8.9,leading=10.7,textColor=colors.HexColor(PROOFINK),spaceAfter=3)
+cap_st=ParagraphStyle("cap",parent=body_st,fontSize=8.1,leading=9.8,textColor=colors.HexColor("#1A1A1A"),spaceBefore=3,spaceAfter=6,alignment=TA_LEFT)
+bib_st=ParagraphStyle("bib",parent=body_st,fontSize=7.7,leading=9,spaceAfter=2,leftIndent=6,firstLineIndent=-6,textColor=colors.HexColor("#1A1A1A"))
 list_st=ParagraphStyle("list",parent=body_st,leftIndent=10,firstLineIndent=-6,spaceAfter=2)
 # meta-title glyph sits above; this is now the SUBTITLE line
 title_st=ParagraphStyle("title",parent=body_st,fontName="Times-Roman",fontSize=12.5,leading=15.5,alignment=TA_CENTER,spaceBefore=2,spaceAfter=7,textColor=_CHAR,tracking=0.4)
 auth_st=ParagraphStyle("auth",parent=body_st,fontSize=9.5,alignment=TA_CENTER,spaceAfter=2,textColor=_INK)
 aff_st=ParagraphStyle("aff",parent=auth_st,fontSize=8,fontName="Times-Italic",spaceAfter=6,textColor=_WG)
 abs_head=ParagraphStyle("abh",parent=auth_st,fontName="Times-Bold",fontSize=8.6,spaceBefore=4,spaceAfter=2,textColor=_SEP,tracking=1.5)
-abs_st=ParagraphStyle("abs",parent=body_st,fontSize=8.4,leading=10.9,alignment=TA_JUSTIFY,leftIndent=12,rightIndent=12,spaceAfter=4)
+abs_st=ParagraphStyle("abs",parent=body_st,fontSize=9.0,leading=11.0,alignment=TA_JUSTIFY,leftIndent=12,rightIndent=12,spaceAfter=4)
 THMNAME=envname
 def eq_flowable(idx,maxw):
     fn=f"eqimg_si/eq{idx}.png"; iw,ih=PILImage.open(fn).size
