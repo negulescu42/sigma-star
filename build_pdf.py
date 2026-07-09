@@ -194,7 +194,7 @@ h3_st=ParagraphStyle("h3",parent=body_st,fontName="Times-BoldItalic",fontSize=9.
 thm_st=ParagraphStyle("thm",parent=body_st,fontName="Times-Italic",fontSize=9.2,leading=11.2,leftIndent=7,rightIndent=3,spaceBefore=2.5,spaceAfter=2.5,backColor=colors.HexColor(THMTINT),borderColor=_SEP,borderWidth=0,borderPadding=(4,4,4,7))
 proof_st=ParagraphStyle("proof",parent=body_st,fontSize=8.9,leading=10.7,textColor=colors.HexColor(PROOFINK),spaceAfter=2.2)
 cap_st=ParagraphStyle("cap",parent=body_st,fontSize=8.1,leading=9.8,textColor=colors.HexColor("#1A1A1A"),spaceBefore=2.5,spaceAfter=4,alignment=TA_LEFT)
-bib_st=ParagraphStyle("bib",parent=body_st,fontSize=7.7,leading=8.6,spaceAfter=1.0,leftIndent=6,firstLineIndent=-6,textColor=colors.HexColor("#1A1A1A"))
+bib_st=ParagraphStyle("bib",parent=body_st,fontSize=7.5,leading=8.2,spaceAfter=0.6,leftIndent=6,firstLineIndent=-6,textColor=colors.HexColor("#1A1A1A"))
 list_st=ParagraphStyle("list",parent=body_st,leftIndent=10,firstLineIndent=-6,spaceAfter=2)
 # meta-title glyph sits above; this is now the SUBTITLE line
 title_st=ParagraphStyle("title",parent=body_st,fontName="Times-Roman",fontSize=12.5,leading=15.5,alignment=TA_CENTER,spaceBefore=2,spaceAfter=7,textColor=_CHAR,tracking=0.4)
