@@ -21,11 +21,16 @@ Design:
       plain: CE softmax only                     (ordinary training)
       tail : CE + lambda * Tail_{sig_op}, lam=0.3 (the certificate as objective)
       l2   : CE + weight_decay=1e-3               (generic-regularizer control)
-  * Finding: at sigma* all three arms are identical (already 100% certified-local); at
-    4*sigma* all are far over budget and the tail penalty makes the tail slightly WORSE
-    while costing ~13 accuracy points. Writes keys: seeds, d_dep, sigma_dep, sigma_star,
-    mult, A0, arms, results{plain,tail,l2}. (An earlier single-seed lambda-sweep showing
-    a spurious 39x/+1.8pt "win" was a bandwidth-mismatch artifact, since retracted.)
+  * Finding (this script, over-wide regime only): at 4*sigma* all three arms are far over
+    budget (cert-local frac 0.0) and the tail penalty makes the tail slightly WORSE while
+    costing ~13 accuracy points -- forcing locality at a coarser-than-certified bandwidth
+    does not work. Writes keys: seeds, d_dep, sigma_dep, sigma_star, mult, A0, arms,
+    results{plain,tail,l2}, all at the single condition mult*sigma*.
+    (Companion runs, not reproduced by this file: with MULT=1.0 the same three arms are
+    identical and already 100% certified-local at sigma* -- the redundancy result; and an
+    earlier single-seed lambda-sweep showing a spurious 39x/+1.8pt "win" was a
+    bandwidth-mismatch artifact, since retracted. Set MULT=1.0 to reproduce the at-sigma*
+    control.)
 """
 import numpy as np, torch, torch.nn as nn, json, time
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
