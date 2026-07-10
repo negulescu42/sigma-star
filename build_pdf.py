@@ -423,7 +423,7 @@ def header_footer(canvas,doc):
     canvas.drawRightString(PW-MARGIN,10*mm,"Preprint")
     canvas.setFont("Times-Roman",7.5); canvas.setFillColor(colors.HexColor(CHARCOAL))
     canvas.drawCentredString(PW/2,10*mm,str(doc.page)); canvas.restoreState()
-paper_title="The Resolution Calibration Principle: A Certified Bandwidth for Kernel Fields"
+paper_title="The Resolution Calibration Principle: Certified Locality for Kernel and Gibbs Fields"
 _banW=PW-2*MARGIN
 # meta-title glyph sizing: scale sigma* png to a target cap height
 _msz=PILImage.open("meta_sigma.png").size; _META_H=13*mm; _META_W=_msz[0]*(_META_H/_msz[1])
