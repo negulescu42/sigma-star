@@ -1,21 +1,31 @@
 """
-Locality-certified by construction (proof-of-concept), controlled version.
+Locality-certified by construction (control experiment). FINAL STATE = negative control.
 
-Turns the RCP far-tail into a training objective, and — per referee — isolates
-the causal claim with a matched generic-regularization control and multi-seed CIs.
+Tests the RCP conclusion's future-work proposal -- make the differentiable far-tail a
+training objective so a field is "locality-certified by construction" -- and, per the
+R36 referee, isolates the causal claim with a matched generic-regularization control
+and multi-seed s.d. The verdict is a NULL: training against the tail is redundant
+because sigma* is by construction the bandwidth where the field already holds the budget.
 
-Design (faithful to "clamp the bandwidth to sigma*"):
-  * Baseline (lambda=0): linear projection head, near-field kernel-vote loss.
-    Its aggregate operating point (radius d, deployment bandwidth sigma* from mass A0)
-    is FIXED and reused for every arm, so all locality metrics share one (d, sigma*)
-    frame (no geometry-rescaling confound). project() standardizes each output dim
-    to unit variance, so no arm can lower the tail by globally shrinking coordinates.
-  * TAIL arm:  loss = CE_vote + lambda * Tail_{sigma*}   (the certificate as objective)
-  * L2 arm  :  loss = CE_vote + wd * ||W||^2              (generic regularizer control)
-    wd chosen to match the TAIL arm's held-out accuracy band, so we compare tail/A
-    reduction AT MATCHED ACCURACY. If TAIL still dominates L2 on tail/A, the locality
-    gain is attributable to the tail penalty specifically, not generic regularization.
-  * SEEDS: 5 seeds per arm; report mean +/- s.d. for acc, tail/eps, A, cert-local frac.
+Design:
+  * Representation head + STANDARD linear softmax classifier (clf = nn.Linear(D_OUT, NCLS)),
+    which carries NO built-in locality pressure (an earlier kernel-vote baseline was
+    itself local and confounded the test). project() standardizes each output dim to unit
+    variance, so no arm can lower the tail by globally shrinking coordinates.
+  * A seed-0 baseline fixes the aggregate operating geometry (radius d, mass A0, certified
+    sigma*). The field is then DEPLOYED and penalized at an OVER-WIDE bandwidth
+    sig_op = MULT * sigma* (MULT = 4.0), the coarse regime where a plain field is over
+    budget -- the only regime where the objective could be non-trivial. All arms share
+    this single (d, sig_op) frame (no geometry-rescaling confound).
+  * Arms (5 seeds each; report mean +/- s.d. for acc, tail/eps, A, cert-local frac):
+      plain: CE softmax only                     (ordinary training)
+      tail : CE + lambda * Tail_{sig_op}, lam=0.3 (the certificate as objective)
+      l2   : CE + weight_decay=1e-3               (generic-regularizer control)
+  * Finding: at sigma* all three arms are identical (already 100% certified-local); at
+    4*sigma* all are far over budget and the tail penalty makes the tail slightly WORSE
+    while costing ~13 accuracy points. Writes keys: seeds, d_dep, sigma_dep, sigma_star,
+    mult, A0, arms, results{plain,tail,l2}. (An earlier single-seed lambda-sweep showing
+    a spurious 39x/+1.8pt "win" was a bandwidth-mismatch artifact, since retracted.)
 """
 import numpy as np, torch, torch.nn as nn, json, time
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
