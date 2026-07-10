@@ -1,0 +1,22 @@
+{
+  "EPS": 0.05,
+  "tau": 1.0,
+  "model": "protonet-omniglot-conv4-64d",
+  "accuracy": 0.9106666666666667,
+  "q2": {
+    "n": 12000,
+    "bound_mean": 0.14587346281597968,
+    "measured_normfar_mean": 0.07189717487674627,
+    "bound_violations": 0,
+    "taustar_meas_normfar_mean": 0.06013438281345476,
+    "taustar_over_eps_violations": 6203
+  },
+  "qinf": {
+    "n": 12000,
+    "bound_mean": 0.11976863198809051,
+    "measured_normfar_mean": 0.07189717487674627,
+    "bound_violations": 0,
+    "taustar_meas_normfar_mean": 0.07456496114052892,
+    "taustar_over_eps_violations": 8004
+  }
+}
