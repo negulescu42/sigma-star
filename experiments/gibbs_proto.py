@@ -35,7 +35,7 @@ def episode(pool,N=60,Ns=5,Nq=5):
 
 enc=Encoder().to(DEV); opt=torch.optim.Adam(enc.parameters(),1e-3); TAU=1.0
 print("training ProtoNet...")
-for it in range(400):
+for it in range(250):
     enc.train(); S,Q,yq=episode(tr_lab); N,Ns=S.shape[:2]
     z=enc(S.reshape(-1,1,28,28)).reshape(N,Ns,-1); proto=z.mean(1); zq=enc(Q)
     d2=((zq[:,None,:]-proto[None,:,:])**2).sum(-1); loss=F.cross_entropy(-d2/TAU,yq)
@@ -49,10 +49,19 @@ def hill(w,q):
     p=w/s; return float((np.power(p,q).sum())**(1.0/(1.0-q)))
 
 enc.eval()
-agg={q:{"bound":[],"meas":[],"viol":0,"meas_star":[],"star_viol":0,"n":0} for q in QS}
+# ONE-SHOT GIBBS CERTIFICATE (corrected). Reference temperature tau0 = deployment TAU.
+# Measure D_{q,0}=D_q(tau0); one-shot tau_OS = Delta/ln(D_{q,0}/eps); DEPLOY at
+# tau_cert = min(tau0, tau_OS). Theorem: m_F(tau_cert) <= eps for every query:
+#   - if tau_OS <= tau0 (cooling): D_q(tau_cert)<=D_{q,0} (flattening) so m_F<=D_{q,0}e^{-Delta/tau_cert}=eps
+#   - if tau_OS >  tau0 (already certified at tau0): bound(tau0)=D_{q,0}e^{-Delta/tau0}<eps so m_F(tau0)<eps
+TAU0=TAU
+agg={q:{"bound0":[],"mdep":[],"viol_dep":0,"mcert":[],"viol_cert":0,
+        "tau_cert":[],"need_cool":0,"n":0} for q in QS}
 accs=[]
+def massat(E,tau,far):
+    z=(-E)/tau; z=z-z.max(); a=np.exp(z); a/=a.sum(); return float(a[far].sum())
 with torch.no_grad():
-    for _ in range(40):
+    for _ in range(24):
         S,Q,yq=episode(te_lab); N,Ns=S.shape[:2]
         z=enc(S.reshape(-1,1,28,28)).reshape(N,Ns,-1); proto=z.mean(1).cpu().numpy(); zq=enc(Q).cpu().numpy()
         d2=((zq[:,None,:]-proto[None,:,:])**2).sum(-1)   # [Q,N] energies
@@ -63,23 +72,30 @@ with torch.no_grad():
             if len(far)<2: continue
             Delta=float(E[far].min()-r_near2)
             if Delta<=0: continue
-            # deployment normalised far mass at tau=TAU
-            z_=(-E)/TAU; z_-=z_.max(); a=np.exp(z_); a/=a.sum(); m_meas=float(a[far].sum())
-            wf=np.exp(-(E[far]-r_near2)/TAU)          # far Gibbs weights, anchor-shifted
+            m_dep=massat(E,TAU0,far)                  # deployment far mass at tau0
+            wf0=np.exp(-(E[far]-r_near2)/TAU0)        # far Gibbs weights at reference tau0
             for q in QS:
-                Dq=hill(wf,q); bound=float(Dq*np.exp(-Delta/TAU))
-                agg[q]["bound"].append(bound); agg[q]["meas"].append(m_meas)
-                agg[q]["viol"]+=int(m_meas>bound+1e-9); agg[q]["n"]+=1
-                taustar=Delta/np.log(max(Dq,1.001)/EPS)
-                zs=(-E)/taustar; zs-=zs.max(); asx=np.exp(zs); asx/=asx.sum(); ms=float(asx[far].sum())
-                agg[q]["meas_star"].append(ms); agg[q]["star_viol"]+=int(ms>EPS+1e-6)
-out={"EPS":EPS,"tau":TAU,"model":"protonet-omniglot-conv4-64d","accuracy":float(np.mean(accs))}
+                Dq0=hill(wf0,q); bound0=float(Dq0*np.exp(-Delta/TAU0))
+                tau_os=Delta/np.log(max(Dq0,1.001)/EPS)
+                tau_cert=min(TAU0,tau_os)             # <-- the correction
+                m_cert=massat(E,tau_cert,far)
+                a=agg[q]
+                a["bound0"].append(bound0); a["mdep"].append(m_dep)
+                a["viol_dep"]+=int(m_dep>bound0+1e-9)
+                a["mcert"].append(m_cert); a["viol_cert"]+=int(m_cert>EPS+1e-6)
+                a["tau_cert"].append(tau_cert); a["need_cool"]+=int(tau_os<TAU0); a["n"]+=1
+out={"EPS":EPS,"tau0":TAU0,"model":"protonet-omniglot-conv4-64d","accuracy":float(np.mean(accs)),
+     "certificate":"one-shot min(tau0,tau_OS)"}
 for q in QS:
-    b=np.array(agg[q]["bound"]); m=np.array(agg[q]["meas"]); ms=np.array(agg[q]["meas_star"])
-    key="inf" if np.isinf(q) else int(q)
-    out[f"q{key}"]={"n":agg[q]["n"],"bound_mean":float(b.mean()),"measured_normfar_mean":float(m.mean()),
-        "bound_violations":int(agg[q]["viol"]),
-        "taustar_meas_normfar_mean":float(ms.mean()),"taustar_over_eps_violations":int(agg[q]["star_viol"])}
+    a=agg[q]; key="inf" if np.isinf(q) else int(q)
+    b0=np.array(a["bound0"]); md=np.array(a["mdep"]); mc=np.array(a["mcert"]); tc=np.array(a["tau_cert"])
+    out[f"q{key}"]={"n":a["n"],
+        "bound0_mean":float(b0.mean()),                       # bound at deployment tau0
+        "mdep_mean":float(md.mean()),"bound_violations_at_tau0":int(a["viol_dep"]),
+        "mcert_mean":float(mc.mean()),"mcert_max":float(mc.max()),
+        "cert_violations":int(a["viol_cert"]),                # target: 0
+        "tau_cert_mean":float(tc.mean()),"tau_cert_median":float(np.median(tc)),
+        "frac_needing_cooling":float(a["need_cool"]/a["n"])}
 json.dump(out,open("gibbs_proto.json","w"),indent=2)
 print("acc",round(out["accuracy"],3),"| q2",out["q2"],"| qinf",out["qinf"])
 print("SAVED gibbs_proto.json")

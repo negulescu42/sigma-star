@@ -1,22 +1,31 @@
 {
   "EPS": 0.05,
-  "tau": 1.0,
+  "tau0": 1.0,
   "model": "protonet-omniglot-conv4-64d",
-  "accuracy": 0.9106666666666667,
+  "accuracy": 0.8983333333333334,
+  "certificate": "one-shot min(tau0,tau_OS)",
   "q2": {
-    "n": 12000,
-    "bound_mean": 0.14587346281597968,
-    "measured_normfar_mean": 0.07189717487674627,
-    "bound_violations": 0,
-    "taustar_meas_normfar_mean": 0.06013438281345476,
-    "taustar_over_eps_violations": 6203
+    "n": 7200,
+    "bound0_mean": 0.16446444534365529,
+    "mdep_mean": 0.07986015565739214,
+    "bound_violations_at_tau0": 0,
+    "mcert_mean": 0.014790529835866359,
+    "mcert_max": 0.047581794193693176,
+    "cert_violations": 0,
+    "tau_cert_mean": 0.8424969934602734,
+    "tau_cert_median": 1.0,
+    "frac_needing_cooling": 0.3063888888888889
   },
   "qinf": {
-    "n": 12000,
-    "bound_mean": 0.11976863198809051,
-    "measured_normfar_mean": 0.07189717487674627,
-    "bound_violations": 0,
-    "taustar_meas_normfar_mean": 0.07456496114052892,
-    "taustar_over_eps_violations": 8004
+    "n": 7200,
+    "bound0_mean": 0.135039274720012,
+    "mdep_mean": 0.07986015565739214,
+    "bound_violations_at_tau0": 0,
+    "mcert_mean": 0.01645544643270193,
+    "mcert_max": 0.04761795744652173,
+    "cert_violations": 0,
+    "tau_cert_mean": 0.8491313588831421,
+    "tau_cert_median": 1.0,
+    "frac_needing_cooling": 0.29138888888888886
   }
 }
