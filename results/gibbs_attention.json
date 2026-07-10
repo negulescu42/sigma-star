@@ -1,0 +1,65 @@
+{
+  "eps": 0.05,
+  "models": {
+    "bert-base-uncased": {
+      "nL": 12,
+      "nH": 12,
+      "d_head": 64,
+      "tau_dep": 8.0,
+      "q2": {
+        "n_query_head": 32988,
+        "bound_mean": 130.64758996816315,
+        "measured_normfar_mean": 0.27017682282227334,
+        "bound_violations": 0,
+        "taustar_mean": 0.03613817165738058,
+        "taustar_median": 0.019090612539167245,
+        "frac_taustar_below_taudep": 1.0,
+        "taustar_meas_normfar_mean": 1.930718215899877e-16,
+        "taustar_meas_normfar_p99": 3.3813247980507634e-61,
+        "taustar_over_eps_violations": 0
+      },
+      "qinf": {
+        "n_query_head": 32988,
+        "bound_mean": 64.41832060972939,
+        "measured_normfar_mean": 0.27017682282227334,
+        "bound_violations": 0,
+        "taustar_mean": 0.04042960422304586,
+        "taustar_median": 0.021143650739220102,
+        "frac_taustar_below_taudep": 1.0,
+        "taustar_meas_normfar_mean": 3.453561276619743e-15,
+        "taustar_meas_normfar_p99": 1.453136989013295e-54,
+        "taustar_over_eps_violations": 0
+      }
+    },
+    "gpt2": {
+      "nL": 12,
+      "nH": 12,
+      "d_head": 64,
+      "tau_dep": 8.0,
+      "q2": {
+        "n_query_head": 32964,
+        "bound_mean": 98.22089602769798,
+        "measured_normfar_mean": 0.2413217809231127,
+        "bound_violations": 0,
+        "taustar_mean": 0.07924958530583853,
+        "taustar_median": 0.024416415898470014,
+        "frac_taustar_below_taudep": 1.0,
+        "taustar_meas_normfar_mean": 7.918794588968521e-12,
+        "taustar_meas_normfar_p99": 2.8702195863260063e-29,
+        "taustar_over_eps_violations": 0
+      },
+      "qinf": {
+        "n_query_head": 32964,
+        "bound_mean": 47.947373288158914,
+        "measured_normfar_mean": 0.2413217809231127,
+        "bound_violations": 0,
+        "taustar_mean": 0.0882783172030332,
+        "taustar_median": 0.027094745244786257,
+        "frac_taustar_below_taudep": 1.0,
+        "taustar_meas_normfar_mean": 4.4917965648520625e-11,
+        "taustar_meas_normfar_p99": 3.5458796175372456e-26,
+        "taustar_over_eps_violations": 0
+      }
+    }
+  }
+}
