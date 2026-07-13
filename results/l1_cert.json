@@ -1,0 +1,53 @@
+{
+  "pair": {
+    "sig": 10.629572823039924,
+    "dep_acc": 0.4522,
+    "loc_acc": 0.468,
+    "dep_eq_loc": 0.8183,
+    "stable_linf": 0.0,
+    "stable_l1": 0.0,
+    "guarantee_linf": 0.0,
+    "guarantee_l1": 0.0,
+    "mean_tail_over_eps": 5087.921687499999,
+    "mean_farmax_over_eps": 88.47332324218749
+  },
+  "star": {
+    "sig": 5.224220782564977,
+    "dep_acc": 0.5661,
+    "loc_acc": 0.5522,
+    "dep_eq_loc": 0.9398,
+    "stable_linf": 0.2715,
+    "stable_l1": 0.3616,
+    "guarantee_linf": 1.0,
+    "guarantee_l1": 1.0,
+    "mean_tail_over_eps": 0.08234956741333006,
+    "mean_farmax_over_eps": 0.0024908813089132304
+  },
+  "cv": {
+    "sig": 4.7865099943200375,
+    "dep_acc": 0.5723,
+    "loc_acc": 0.558,
+    "dep_eq_loc": 0.9517,
+    "stable_linf": 0.4165,
+    "stable_l1": 0.5116,
+    "guarantee_linf": 1.0,
+    "guarantee_l1": 1.0,
+    "mean_tail_over_eps": 0.006224686920642852,
+    "mean_farmax_over_eps": 0.00019851726107299327
+  },
+  "trunc": {
+    "sig": 4.7865099943200375,
+    "acc": 0.558,
+    "agree_with_smooth_star": 0.8901,
+    "far_mass": 0.0
+  },
+  "meta": {
+    "d": 26.018503189086914,
+    "sigma_pair": 10.629572823039924,
+    "A_ref": 12164.3330078125,
+    "sigma_star": 5.224220782564977,
+    "sigma_cv": 4.7865099943200375,
+    "sigma_cv_trunc": 4.7865099943200375,
+    "eps": 0.05
+  }
+}
