@@ -24,7 +24,7 @@ bound; a split-conformal wrapper gives finite-sample coverage for future queries
 | File | Description |
 |------|-------------|
 | `rcp_main.pdf` | Main manuscript (6 pages) |
-| `rcp_si.pdf` | Supplementary Information (16 Notes: full proofs, Gibbs/Rényi/conformal extensions, robustness, reproducibility) |
+| `rcp_si.pdf` | Supplementary Information (15 Notes: full proofs, Gibbs/Rényi/conformal extensions, robustness, reproducibility) |
 | `rcp_main.tex`, `rcp_si.tex` | LaTeX source (compile with `pdflatex`, two passes each) |
 | `figs/` | The manuscript figures, referenced by the sources as `figs/fig_<id>.png` |
 | `experiments/` | The experiment scripts behind every reported number |
