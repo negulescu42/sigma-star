@@ -1,0 +1,26 @@
+{
+  "pool": 3600,
+  "retained": {
+    "n": 759,
+    "yesno_frac": 0.08827404479578392,
+    "n_supp_mean": 2.346508563899868,
+    "ctx_tok_full_mean": 1047.6245059288538,
+    "ctx_tok_full_median": 1041.0,
+    "truncated_frac": 0.9525691699604744,
+    "comparison_frac": 0.27140974967061926,
+    "hard_frac": 1.0,
+    "ans_len_mean": 2.316205533596838
+  },
+  "dropped": {
+    "n": 2841,
+    "yesno_frac": 0.05667018655403027,
+    "n_supp_mean": 2.454769447377684,
+    "ctx_tok_full_mean": 1242.8708201337556,
+    "ctx_tok_full_median": 1215.0,
+    "truncated_frac": 1.0,
+    "comparison_frac": 0.1890179514255544,
+    "hard_frac": 1.0,
+    "ans_len_mean": 2.4695529743048223
+  },
+  "retention_frac": 0.21083333333333334
+}

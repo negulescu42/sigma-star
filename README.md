@@ -24,7 +24,7 @@ bound; a split-conformal wrapper gives finite-sample coverage for future queries
 | File | Description |
 |------|-------------|
 | `rcp_main.pdf` | Main manuscript (6 pages) |
-| `rcp_si.pdf` | Supplementary Information (15 Notes: full proofs, Gibbs/Rényi/conformal extensions, robustness, reproducibility) |
+| `rcp_si.pdf` | Supplementary Information (18 Notes in 6 Parts: full proofs, Gibbs/Rényi/conformal extensions, task-grounded HotpotQA program, robustness, reproducibility) |
 | `rcp_main.tex`, `rcp_si.tex` | LaTeX source (compile with `pdflatex`, two passes each) |
 | `figs/` | The manuscript figures, referenced by the sources as `figs/fig_<id>.png` |
 | `experiments/` | The experiment scripts behind every reported number |
@@ -45,6 +45,10 @@ bound; a split-conformal wrapper gives finite-sample coverage for future queries
 | `experiments/renyi_conformal.py` | Rényi D_q mass family and split-conformal query coverage |
 | `experiments/gibbs_attention.py`, `experiments/gibbs_proto.py` | Gibbs far-mass certificate on BERT/GPT-2 attention and a ProtoNet |
 | `experiments/modality_sweep.py`, `experiments/grow_backbone.py` | Multi-modality and growing-memory re-calibration tables |
+| `experiments/hotpot_unified.py` | Task-grounded HotpotQA experiment on the canonical continued-trained reader: full certificate audit (positive-gap, empirical compliance, analytic coverage, tightness, deletion coupling) plus the 3-seed far-mass training sweep (SI Note 10, main Figs 5–6) |
+| `experiments/hotpot_unified_controls.py` | Random and top-decile far-partition controls with example-level bootstrap CIs, on the same reader (SI Note 10) |
+| `experiments/hotpot_retention.py` | Characterization of the 512-token retention filter — retained vs dropped examples (SI Note 10 limitations) |
+| `experiments/hotpot_cert.py`, `experiments/hotpot_controls.py`, `experiments/certtrain.py` | Earlier single-run diagnostic, controls, and training scripts (superseded by the unified pipeline; retained for provenance) |
 
 Result files in `results/` carry the σ/τ values, tails, accuracies, and seeds; every number
 in the manuscript traces to one of them.
