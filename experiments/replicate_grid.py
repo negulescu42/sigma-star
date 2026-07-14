@@ -230,6 +230,11 @@ def boot_gap(a,b,n=2000):
         idx=r.randint(0,len(a),len(a)); g.append(a[idx].mean()-b[idx].mean())
     return float((a-b).mean()),float(np.percentile(g,2.5)),float(np.percentile(g,97.5))
 
+SEEDS=[0,1,2]
+def ms(xs):
+    xs=[x for x in xs if x is not None]
+    return (float(np.mean(xs)), float(np.std(xs))) if xs else (None,None)
+
 GRID=[(mk,dk) for mk in MODELS for dk in DATASETS]
 results={}
 for mkey,dkey in GRID:
@@ -241,40 +246,52 @@ for mkey,dkey in GRID:
     print(f"{cell}: train {len(TRAIN)} test {len(TEST)}",flush=True)
     if len(TRAIN)<200 or len(TEST)<100:
         results[cell]={"error":f"too few examples train={len(TRAIN)} test={len(TEST)}"}; continue
-    # lambda=0 canonical reader: audit + deletion + control
-    m0=train_reader(mkey,0.0,TRAIN,SEED)
-    df,em0,f0=cert_rows(m0,mkey,tok,TEST,want_deletion=True)
-    pg=df[df.posgap==1]
-    rng=np.random.RandomState(0)
-    task_cov=df.groupby(df.index//(len(LAYERS)*m0.config.num_attention_heads)).cert2.mean().values
-    rand=random_control_cov(m0,mkey,tok,TEST,rng)
-    audit=dict(
-      EM=em0,F1=f0,n_test=len(TEST),
-      posgap_rate=float(df.posgap.mean()),
-      empirical_compliance=float(df.compliant.mean()),
-      analytic_cert2=float(pg.cert2.mean()) if len(pg) else 0.0,
-      viol2=int((pg.mF>pg.B2+1e-9).sum()),
-      mF_mean=float(df.mF.mean()),
-      del_bound_viol=int((df.delO>df.del_bound+1e-6).sum()),
-      relpert_cert=float(df[df.cert2==1].relpert.mean()) if (df.cert2==1).any() else None,
-      relpert_uncert=float(df[df.cert2==0].relpert.mean()),
-      mF_by_layer={int(L):float(df[df.L==L].mF.mean()) for L in LAYERS},
-      task_cov=boot(task_cov), random_cov=boot(rand),
-      task_minus_random=boot_gap(task_cov,rand),
-    )
-    # lambda=8 trained reader: coverage + accuracy
-    m8=train_reader(mkey,8.0,TRAIN,SEED)
-    df8,em8,f8=cert_rows(m8,mkey,tok,TEST,want_deletion=False)
-    pg8=df8[df8.posgap==1]
-    train=dict(EM_lam0=em0,F1_lam0=f0,cert2_lam0=audit["analytic_cert2"],
-               compliant_lam0=float(df.compliant.mean()),mF_lam0=float(df.mF.mean()),
-               EM_lam8=em8,F1_lam8=f8,
+    perseed=[]
+    for sd in SEEDS:
+        # lambda=0 canonical reader: audit + deletion + control
+        m0=train_reader(mkey,0.0,TRAIN,sd)
+        df,em0,f0=cert_rows(m0,mkey,tok,TEST,want_deletion=True)
+        pg=df[df.posgap==1]
+        nh=len(LAYERS)*m0.config.num_attention_heads
+        task_cov=df.groupby(df.index//nh).cert2.mean().values
+        rand=random_control_cov(m0,mkey,tok,TEST,np.random.RandomState(sd))
+        gap=boot_gap(task_cov,rand)
+        # lambda=8 trained reader
+        m8=train_reader(mkey,8.0,TRAIN,sd)
+        df8,em8,f8=cert_rows(m8,mkey,tok,TEST,want_deletion=False)
+        pg8=df8[df8.posgap==1]
+        s=dict(seed=sd, EM=em0, F1=f0,
+               posgap_rate=float(df.posgap.mean()),
+               empirical_compliance=float(df.compliant.mean()),
+               analytic_cert2=float(pg.cert2.mean()) if len(pg) else 0.0,
+               viol2=int((pg.mF>pg.B2+1e-9).sum()),
+               mF_mean=float(df.mF.mean()),
+               del_bound_viol=int((df.delO>df.del_bound+1e-6).sum()),
+               relpert_cert=float(df[df.cert2==1].relpert.mean()) if (df.cert2==1).any() else None,
+               relpert_uncert=float(df[df.cert2==0].relpert.mean()),
+               task_cov=float(task_cov.mean()), random_cov=float(rand.mean()),
+               task_minus_random=gap[0], gap_ci=[gap[1],gap[2]],
+               EM_lam8=em8, F1_lam8=f8,
                cert2_lam8=float(pg8.cert2.mean()) if len(pg8) else 0.0,
-               compliant_lam8=float(df8.compliant.mean()),mF_lam8=float(df8.mF.mean()),
+               compliant_lam8=float(df8.compliant.mean()), mF_lam8=float(df8.mF.mean()),
                viol2_lam8=int((pg8.mF>pg8.B2+1e-9).sum()))
-    results[cell]=dict(audit=audit,train=train)
-    print(json.dumps(results[cell],indent=2),flush=True)
-    del m0,m8; torch.cuda.empty_cache()
+        perseed.append(s)
+        print(f"  seed {sd}: EM {em0:.3f} cert0 {s['analytic_cert2']:.3f} gap {s['task_minus_random']:.3f} "
+              f"cert8 {s['cert2_lam8']:.3f} EM8 {em8:.3f} viol {s['viol2']}/{s['viol2_lam8']}",flush=True)
+        del m0,m8; torch.cuda.empty_cache()
+    agg={k:ms([s[k] for s in perseed]) for k in
+         ["EM","F1","posgap_rate","empirical_compliance","analytic_cert2","mF_mean",
+          "relpert_cert","relpert_uncert","task_cov","random_cov","task_minus_random",
+          "EM_lam8","cert2_lam8","compliant_lam8","mF_lam8"]}
+    agg["n_test"]=len(TEST)
+    agg["viol2_total"]=int(sum(s["viol2"] for s in perseed))
+    agg["viol2_lam8_total"]=int(sum(s["viol2_lam8"] for s in perseed))
+    agg["del_bound_viol_total"]=int(sum(s["del_bound_viol"] for s in perseed))
+    agg["gap_ci_all"]=[s["gap_ci"] for s in perseed]
+    results[cell]=dict(agg=agg, perseed=perseed)
+    print(f"{cell} AGG: EM {agg['EM'][0]:.3f}+-{agg['EM'][1]:.3f}  cert0 {agg['analytic_cert2'][0]:.3f}+-{agg['analytic_cert2'][1]:.3f}  "
+          f"gap {agg['task_minus_random'][0]:.3f}+-{agg['task_minus_random'][1]:.3f}  cert8 {agg['cert2_lam8'][0]:.3f}+-{agg['cert2_lam8'][1]:.3f}  "
+          f"viol {agg['viol2_total']}/{agg['viol2_lam8_total']}",flush=True)
 
 json.dump(dict(results=results,params=dict(N_TRAIN=N_TRAIN,EPOCHS=EPOCHS,LR=LR,EPS=EPS,
               LAYERS=LAYERS,SEED=SEED,grid=[f"{a}x{b}" for a,b in GRID])),
