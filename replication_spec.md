@@ -40,7 +40,7 @@ too under identical code so all four cells are strictly comparable.
 3. Deletion coupling: relpert cert vs uncert.
 4. Controls: task vs size-matched random far set, analytic coverage + paired
    bootstrap gap (does task annotation beat random? = is the partition informative).
-5. Training: 1 penalty level lambda=8 (the strongest, clearest signal), 1 seed
+5. Training: 1 penalty level lambda=8 (the strongest, clearest signal), 3 seeds
    for cross-cells (compute budget), matched lambda=0 control -> does far-mass
    regularization raise certified coverage at bounded accuracy cost?
    (Full 3-seed 4-lambda sweep already exists for BERT×HotpotQA.)

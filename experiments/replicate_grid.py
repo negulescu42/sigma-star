@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Cross-model x cross-dataset replication of the task-grounded attention certificate.
 Grid: {BERT, RoBERTa} x {HotpotQA, 2Wiki}. Each cell: continued-train matched lambda=0
-reader + lambda=8 far-mass-regularized reader (1 seed), full certificate audit + deletion
+reader + lambda=8 far-mass-regularized reader (3 seeds per cell), full certificate audit + deletion
 + task-vs-random control on the lambda=0 reader. Frozen protocol identical to hotpot_unified.py.
 """
 import json, re, sys, numpy as np, torch, torch.nn.functional as F

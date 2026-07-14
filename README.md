@@ -23,7 +23,7 @@ bound; a split-conformal wrapper gives finite-sample coverage for future queries
 
 | File | Description |
 |------|-------------|
-| `rcp_main.pdf` | Main manuscript (6 pages) |
+| `rcp_main.pdf` | Main manuscript (8 pages: ~7 pages of content, references spill to p8) |
 | `rcp_si.pdf` | Supplementary Information (18 Notes in 6 Parts: full proofs, Gibbs/Rényi/conformal extensions, task-grounded HotpotQA program, robustness, reproducibility) |
 | `rcp_main.tex`, `rcp_si.tex` | LaTeX source (compile with `pdflatex`, two passes each) |
 | `figs/` | The manuscript figures, referenced by the sources as `figs/fig_<id>.png` |
@@ -46,7 +46,7 @@ bound; a split-conformal wrapper gives finite-sample coverage for future queries
 | `experiments/gibbs_attention.py`, `experiments/gibbs_proto.py` | Gibbs far-mass certificate on BERT/GPT-2 attention and a ProtoNet |
 | `experiments/modality_sweep.py`, `experiments/grow_backbone.py` | Multi-modality and growing-memory re-calibration tables |
 | `experiments/hotpot_unified.py` | Task-grounded HotpotQA experiment on the canonical continued-trained reader: full certificate audit (positive-gap, empirical compliance, analytic coverage, tightness, deletion coupling) plus the 3-seed far-mass training sweep (SI Note 10, main Figs 5–6) |
-| `experiments/replicate_grid.py` | Cross-model × cross-dataset replication: the full audit + control + training pipeline over {BERT, RoBERTa} × {HotpotQA, 2WikiMultiHopQA}, one seed per cell; BERT×HotpotQA reproduces `hotpot_unified` seed-0 bit-for-bit (SI Note 10, Table S1) |
+| `experiments/replicate_grid.py` | Cross-model × cross-dataset replication: the full audit + control + training pipeline over {BERT, RoBERTa} × {HotpotQA, 2WikiMultiHopQA}, three seeds per cell; BERT×HotpotQA reproduces the `hotpot_unified` three-seed audit (SI Note 10, Table S1) |
 | `experiments/hotpot_unified_controls.py` | Random and top-decile far-partition controls with example-level bootstrap CIs, on the same reader (SI Note 10) |
 | `experiments/hotpot_retention.py` | Characterization of the 512-token retention filter — retained vs dropped examples (SI Note 10 limitations) |
 | `experiments/hotpot_cert.py`, `experiments/hotpot_controls.py`, `experiments/certtrain.py` | Earlier single-run diagnostic, controls, and training scripts (superseded by the unified pipeline; retained for provenance) |

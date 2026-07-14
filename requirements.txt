@@ -1,0 +1,13 @@
+# Exact versions used to produce the released results (Python 3.12.3, CUDA 12.8).
+# The attention/HotpotQA experiments require a CUDA GPU; the CIFAR/Laplace/geometry
+# experiments run on CPU. Install torch matching your CUDA toolkit if not 12.8.
+torch==2.8.0
+transformers==4.57.6
+adapters==1.3.0
+datasets==4.8.4
+numpy==2.1.2
+pandas==3.0.2
+scipy==1.17.1
+pyarrow>=15
+scikit-learn>=1.3
+matplotlib>=3.8
