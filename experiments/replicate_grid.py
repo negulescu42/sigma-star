@@ -294,7 +294,8 @@ for mkey,dkey in GRID:
           f"viol {agg['viol2_total']}/{agg['viol2_lam8_total']}",flush=True)
 
 json.dump(dict(results=results,params=dict(N_TRAIN=N_TRAIN,EPOCHS=EPOCHS,LR=LR,EPS=EPS,
-              LAYERS=LAYERS,SEED=SEED,grid=[f"{a}x{b}" for a,b in GRID])),
+              MAXLEN=MAXLEN,TAU0=TAU0,BATCH=BATCH,LAMBDA_TRAIN=8.0,
+              LAYERS=LAYERS,SEEDS=SEEDS,grid=[f"{a}x{b}" for a,b in GRID])),
           open('replicate_grid.json','w'),indent=2)
 print("\n=== DONE ===")
 print(json.dumps(results,indent=2))

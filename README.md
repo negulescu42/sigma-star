@@ -40,8 +40,8 @@ bound; a split-conformal wrapper gives finite-sample coverage for future queries
 | Script | Produces |
 |--------|----------|
 | `experiments/l1_cert.py` | Vector ℓ₁ decision certificate and coverage-matched selective-prediction accuracies on the three frozen backbones |
-| `experiments/grow_baselines.py` | Label-free median / k-NN bandwidth scales recomputed at each densification stage (SI Note 15 table) |
-| `experiments/geom_stress.py` | Frozen-geometry stress test — anisotropic / two-moons / densification, Euclidean vs Mahalanobis / geodesic (SI Note 14 figure) |
+| `experiments/grow_baselines.py` | Label-free median / k-NN bandwidth scales recomputed at each densification stage (SI Note 18 table) |
+| `experiments/geom_stress.py` | Frozen-geometry stress test — anisotropic / two-moons / densification, Euclidean vs Mahalanobis / geodesic (SI Note 17 figure) |
 | `experiments/renyi_conformal.py` | Rényi D_q mass family and split-conformal query coverage |
 | `experiments/gibbs_attention.py`, `experiments/gibbs_proto.py` | Gibbs far-mass certificate on BERT/GPT-2 attention and a ProtoNet |
 | `experiments/modality_sweep.py`, `experiments/grow_backbone.py` | Multi-modality and growing-memory re-calibration tables |

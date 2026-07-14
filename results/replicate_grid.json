@@ -660,12 +660,29 @@
       11,
       12
     ],
-    "SEED": 0,
     "grid": [
       "bertxhotpot",
       "bertx2wiki",
       "robertaxhotpot",
       "robertax2wiki"
-    ]
+    ],
+    "SEEDS": [
+      0,
+      1,
+      2
+    ],
+    "MAXLEN": 512,
+    "TAU0": 8.0,
+    "BATCH": 4,
+    "LAMBDA_TRAIN": 8.0,
+    "revisions": {
+      "bert_backbone": "bert-base-uncased",
+      "bert_adapter": "AdapterHub/bert-base-uncased-pf-hotpotqa",
+      "roberta_backbone": "roberta-base",
+      "roberta_adapter": "AdapterHub/roberta-base-pf-hotpotqa",
+      "hotpotqa": "hotpot_qa (distractor config)",
+      "2wiki": "scholarly-shadows-syndicate/2WikiMultihopQA_with_q_gpt35",
+      "note": "HF hub identifiers; pinned package versions in requirements.txt / REPRODUCIBILITY.md"
+    }
   }
 }

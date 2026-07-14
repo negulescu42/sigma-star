@@ -4,7 +4,10 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage{placeins}
 \usepackage{fancyhdr}
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=false]{hyperref}
+\hypersetup{pdftitle={The Resolution Calibration Principle: Supplementary Information},pdfauthor={R. Negulescu, M. Tanase, C. Bereanu}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[C]{\small\itshape\rightmark}
@@ -22,7 +25,7 @@
 \renewcommand{\thetable}{S\arabic{table}}
 \title{\vspace{-1.2em}Supplementary Information\\ The Resolution Calibration Principle: Certified Locality for Kernel and Gibbs Fields}
 \author{R. Negulescu$^{1}$\quad M. T\u{a}nase$^{2}$\quad C. Bereanu$^{3}$ \\[0.3em]
-\parbox{0.92\textwidth}{\centering\normalfont\small $^{1}$The Informational Buildup Foundation (IBF), Bucharest, Romania.\quad $^{2}$Bucharest, Romania.\quad $^{3}$Simion Stoilow Institute of Mathematics of the Romanian Academy (IMAR), Bucharest, Romania. Corresponding author: \texttt{radu@ibf.ro}.}}
+\parbox{0.92\textwidth}{\centering\normalfont\small $^{1}$The Informational Buildup Foundation (IBF), Bucharest, Romania.\quad $^{2}$Independent researcher, Bucharest, Romania.\quad $^{3}$Simion Stoilow Institute of Mathematics of the Romanian Academy (IMAR), Bucharest, Romania. Corresponding author: \texttt{radu@ibf.ro}.}}
 \date{}
 \begin{document}
 \twocolumn[
@@ -38,11 +41,12 @@ This document collects the full proofs of the propositions, theorem, and corolla
 \section*{Roadmap}
 This Supplementary Information is organised into six Parts. \textbf{Part A} (Notes 1--4) proves the additive certificate: the safety frontier and aggregate tail bound, the R\'enyi/Hill effective-mass family, one-shot conservativeness, and the frozen-geometry corollary. \textbf{Part B} (Notes 5--7) derives its operational consequences: decision stability and the performance floor, the uniform-over-region certificate, and the selective-prediction operating point. \textbf{Part C} (Notes 8--12) extends the principle to normalised (Gibbs) readouts: attention as a Gaussian kernel field, prototypical networks, the Gibbs resolution certificate (Theorem~2) with its full task-grounded HotpotQA program, output locality, and the single-head-to-full-layer bound. \textbf{Part D} (Note 13) gives the conformal finite-sample query certificate. \textbf{Part E} (Notes 14--15) reports the empirical program across vision, text and tabular fields and the hard-truncation comparator. \textbf{Part F} (Notes 16--18) covers independent numerical verification, robustness, and reproducibility. Supplementary-only results carry an S prefix (Propositions~S1--S5, Corollaries~S1--S2); results shared with the main text keep their main-text numbers.
 
+\FloatBarrier
 \section*{Part A \textperiodcentered\ The additive certificate}
 \markright{Part A \textemdash\ The additive certificate}
 
 \section*{Part A \textperiodcentered\ Note 1 --- Safety frontier and aggregate tail bound}
-\markright{Part A \textemdash\ Note 1 --- Safety frontier and aggregate tail bound}
+\markright{Part A \textemdash\ Note 1}
 \begin{proposition}[Safety frontier]
 For fixed $A>0$, $d>0$, and tolerance $0<\varepsilon<A$, the equation $\mathrm{cert}(A,\sigma,d)=A\,\Ksig(d^2)=\varepsilon$ has the unique solution
 \begin{equation}
@@ -68,7 +72,7 @@ $\mathrm{cert}$ is continuous and strictly increasing in $\sigma$ on $(0,\infty)
 with $A=V_{\max}\Neff$, using $|v_i|\le V_{\max}$ then the rearranged inequality. The only assumption is $\omega_i\le\Ksig(d^2)$ for far sources, which the near/far partition (A2) guarantees by construction. Because the far set is defined by $r_i>d$, the bound is sharp in the limit as all far-source radii decrease to $d$ from above: there $\omega_i\to\Ksig(d^2)$ for every $i\in\mathcal{F}$, both inequalities approach equalities, and the aggregate tail approaches $\mathrm{cert}(A,\sigma,d)$. Under the alternative convention $r_i\ge d$, equality is attained exactly at the boundary. Setting $\sigma=\sstar$ makes this aggregate leakage at most $\varepsilon$.
 
 \section*{Part A \textperiodcentered\ Note 2 --- The R\'enyi/Hill effective-mass family}
-\markright{Part A \textemdash\ Note 2 --- The R\'enyi/Hill effective-mass family}
+\markright{Part A \textemdash\ Note 2}
 \label{si:renyi}
 \emph{This note generalises the effective mass of Note~1 to the R\'enyi/Hill family (Proposition S1).}
 \paragraph{Statement.} The aggregate bound of Note~1 uses the participation ratio $\Neff=(\sum\omega_i)^2/\sum\omega_i^2$, which is the Hill number of the far weights at order $q=2$. It is one member of a family. For $q>1$ define the Hill number of the (nonnegative) far weights $\{\omega_i\}_{i\in\mathcal{F}}$,
@@ -81,13 +85,13 @@ with the limits $D_2=\Neff$ (participation ratio) and $D_\infty=\big(\sum_i\omeg
 Every far source lies beyond $d$, so $\omega_i=K_\sigma(\lVert y-z_i\rVert^2)\le K_\sigma(d^2)=:\kappa$ by monotonicity. Hence $\max_i\omega_i\le\kappa$, and $\sum_i\omega_i=D_\infty\max_i\omega_i\le D_\infty\,\kappa$. The ordering $D_q$ nonincreasing in $q$ is the standard monotonicity of Hill numbers (R\'enyi entropies are nonincreasing in their order), so $D_\infty\le D_q\le D_2$ for $q\ge2$, and $\sum_i\omega_i\le D_q\kappa$ for each such $q$ follows from the $q=\infty$ case together with $D_q\ge D_\infty$. The $q=2$ case is exactly Note~1.
 \end{proof}
 \paragraph{Certified bandwidth and conservativeness.} Setting $A_q=V_{\max}D_q$ and inverting $A_q K_\sigma(d^2)=\varepsilon$ gives a $q$-indexed frontier $\sstar_q=d/\sqrt{2\ln(A_q/\varepsilon)}$; since $A_q$ decreases in $q$, $\sstar_q$ increases in $q$, so higher orders certify a larger admissible bandwidth. The conservativeness argument of Note~3 applies to each $D_q$: the map $r_k^2\mapsto\omega_k$ is monotone, so as $\sigma$ grows the normalised weights $p_i$ flatten in the majorisation order, and every Hill number $D_q$ (a Schur-concave, symmetric functional of $p$) is nondecreasing in $\sigma$. One measurement at $\sigma_{\mathrm{pair}}$ therefore over-estimates $D_q(\sstar_q)$ for every $q$.
-\paragraph{Empirical confirmation.} On the three frozen CIFAR-100 backbones, measured over $10{,}000$ held-out queries at $\varepsilon=0.05$, the family sweeps a genuine tightness--smoothness axis with the certified tail provably in budget throughout (zero queries over $\varepsilon$ at every $q$, zero monotonicity violations over a $10$-point bandwidth grid):
+\paragraph{Empirical confirmation.} On the three frozen CIFAR-100 backbones, measured over $10{,}000$ held-out queries at $\varepsilon=0.05$, the family refines the effective mass with the certified tail provably in budget throughout ($D_2$ is the smooth operating statistic, $D_\infty=\sum_i\omega_i/\max_i\omega_i$ the exact static endpoint, and intermediate $q$ effective-mass refinements) (zero queries over $\varepsilon$ at every $q$, zero monotonicity violations over a $10$-point bandwidth grid):
 ResNet-18 $A_2=1.22\times10^4$ ($\sstar=5.22$, tail $0.08\varepsilon$) tightens to $A_\infty=5.1\times10^3$ ($\sstar=5.42$, tail $0.21\varepsilon$), a $2.4\times$ mass reduction;
 ResNet-50 $A_2=1.18\times10^4\to A_\infty=4.9\times10^3$ ($2.4\times$);
-ViT-B/16 $A_2=1.67\times10^4\to A_\infty=9.8\times10^3$ ($1.7\times$). The participation ratio is thus the loosest useful member. Since $D_\infty\le D_q\le D_2$ deterministically and every member is conservative, $q=\infty$ always certifies an equal-or-larger bandwidth, and a deployment that wants the tightest label-free certificate should use it. We nonetheless report $D_2$ as the primary mass for a concrete reason, not merely for continuity with Note~1: $D_2=(\sum\omega)^2/\sum\omega^2$ is a smooth, everywhere-differentiable function of the weights, whereas $D_\infty=\sum\omega/\max\omega$ has a non-differentiable $\max$. A smooth reported mass keeps the certificate and any downstream optimisation well-behaved; $D_2$ supplies it while $D_\infty$ does not. (The training experiment of Note~10 regularizes the exact far mass $m_F$, which is itself differentiable in the logits; it does not optimise $D_2$ or the $D_2$ bound. The relevance of $q$ there is only that the \emph{reported} certified fraction uses the $D_2$ coverage.) The Hill order is therefore a genuine dial---$q=\infty$ for the tightest static certificate, $q=2$ for the smooth one---and the $\approx\!2\times$ mass headroom between them (recovering roughly half at $q=\infty$) is the price of that smoothness (script \texttt{renyi\_conformal.py} in the repository).
+ViT-B/16 $A_2=1.67\times10^4\to A_\infty=9.8\times10^3$ ($1.7\times$). The participation ratio is thus the loosest useful member. Since $D_\infty\le D_q\le D_2$ deterministically and every member is conservative, $q=\infty$ always certifies an equal-or-larger bandwidth, and a deployment that wants the tightest label-free certificate should use it. We nonetheless report $D_2$ as the primary mass for a concrete reason, not merely for continuity with Note~1: $D_2=(\sum\omega)^2/\sum\omega^2$ is a smooth, everywhere-differentiable function of the weights, whereas $D_\infty=\sum\omega/\max\omega$ has a non-differentiable $\max$. A smooth reported mass keeps the certificate and any downstream optimisation well-behaved; $D_2$ supplies it while $D_\infty$ does not. (The training experiment of Note~10 regularizes the exact far mass $m_F$, which is itself differentiable in the logits; it does not optimise $D_2$ or the $D_2$ bound. The relevance of $q$ there is only that the \emph{reported} certified fraction uses the $D_2$ coverage.) The Hill order is therefore an effective-mass refinement, not an independent conceptual axis: $D_\infty$ is the exact static endpoint, $D_2$ the smooth operating statistic, and intermediate $q$ interpolate; the $\approx\!2\times$ mass headroom between $q=2$ and $q=\infty$ (recovering roughly half at $q=\infty$) is the price of smoothness (script \texttt{renyi\_conformal.py} in the repository).
 
 \section*{Part A \textperiodcentered\ Note 3 --- One-shot conservativeness}
-\markright{Part A \textemdash\ Note 3 --- One-shot conservativeness}
+\markright{Part A \textemdash\ Note 3}
 \emph{This note proves that one mass measurement is conservative (Proposition 2), including the general log-concave-tail case.}
 \begin{proposition}[Conservativeness]
 The effective mass $\Neff(\sigma)$ is nondecreasing in $\sigma$. Consequently $\sstar\le\sigma_{\mathrm{pair}}$, the mass measured at $\sigma_{\mathrm{pair}}$ satisfies $A(\sigma_{\mathrm{pair}})\ge A(\sstar)$, and the true tail at the deployed bandwidth obeys $\mathrm{Tail}_{\sstar}(y,d)\le A(\sigma_{\mathrm{pair}})\,K_{\sstar}(d^2)=\varepsilon$.
@@ -115,7 +119,7 @@ If $K$ is positive, strictly decreasing, and $\ln K(x)$ is concave in $\ln x$, t
 
 
 \section*{Part A \textperiodcentered\ Note 4 --- Frozen-geometry certificate}
-\markright{Part A \textemdash\ Note 4 --- Frozen-geometry certificate}
+\markright{Part A \textemdash\ Note 4}
 \emph{This note records the metric-agnostic corollary: any frozen source--query geometry inherits the certificate.}
 \paragraph{Frozen geometry.} The frontier and monotonicity proofs use the source--query distances only through their fixed numerical values. Let $\rho_i(y)\ge0$ be any source--query dissimilarities that are fixed and independent of the calibrated scale, and set $\omega_i(s)=\exp[-\rho_i(y)^2/2s^2]$ with far set $\mathcal{F}(y)=\{i:\rho_i(y)>d\}$.
 
@@ -124,11 +128,12 @@ For a fixed query and frozen geometry, the aggregate-envelope bound (Proposition
 \noindent \emph{Boundary.} If the representation, metric, graph or local covariance changes with the calibrated scale, the one-shot monotonicity argument no longer applies automatically: the geometry must be frozen, or the certificate re-computed at each new geometry. Optimising the geometry (learned anisotropic metrics, diffusion or effective-resistance distances, tangent/normal budgets) can improve the usefulness of the near/far split without altering the certificate, and is left as future work.
 
 
+\FloatBarrier
 \section*{Part B \textperiodcentered\ Operational consequences}
 \markright{Part B \textemdash\ Operational consequences}
 
 \section*{Part B \textperiodcentered\ Note 5 --- Decision stability and performance floor}
-\markright{Part B \textemdash\ Note 5 --- Decision stability and performance floor}
+\markright{Part B \textemdash\ Note 5}
 \paragraph{Vector far contribution.} Let each source carry a class-value vector $v_i\in\Rbb^C$ and write the far contribution as $T(y)=\sum_{i\in\mathcal{F}}v_i\Ksig(\lVert y-z_i\rVert^2)$. The aggregate bound of Note~1 applied coordinatewise, together with $\lVert v_i\rVert_1\le V_{\max}$, gives $\lVert T(y)\rVert_1\le\varepsilon$ at $\sigma\le\sstar$. For a one-hot Parzen field each $v_i$ is a class indicator, so $\lVert v_i\rVert_1=V_{\max}=1$ and this assumption holds exactly.
 \begin{theorem}[Decision stability, $\ell_1$ form]
 Let $\sigma\le\sstar$. For the local top class $a$ and any competitor $b$, the two-class gap satisfies $|T_a-T_b|\le|T_a|+|T_b|\le\lVert T\rVert_1\le\varepsilon$. Hence a local margin $m(y)>\varepsilon$ makes the deployed prediction equal the local prediction.
@@ -154,7 +159,7 @@ By the aggregate bound of Note~1 applied coordinatewise with $\lVert v_i\rVert_1
 \paragraph{Norm-dependent thresholds.} The threshold is set by the norm the value vectors obey. With one-hot (or any $\ell_1$-bounded) values, $\lVert T\rVert_1\le\varepsilon$ and the pairwise gap moves by at most $\varepsilon$, giving the $\varepsilon$ threshold above. With only a per-class bound $\lVert v_i\rVert_\infty\le V_{\max}$, each class score moves by at most $\varepsilon$ and the pairwise gap by at most $2\varepsilon$, recovering the generic $2\varepsilon$ theorem. The main paper leads with the $\ell_1$ form because the implemented one-hot field satisfies it. Admissible far-set \emph{replacement} shifts $T$ by the difference of two tails, of $\ell_1$-norm at most $2\varepsilon$, so a margin above $2\varepsilon$ preserves the decision under replacement. A query that fails its threshold is not misclassified---it is merely \emph{uncertified}, and a deployer may abstain on exactly this set.
 
 \section*{Part B \textperiodcentered\ Note 6 --- Uniform-over-region certificate}
-\markright{Part B \textemdash\ Note 6 --- Uniform-over-region certificate}
+\markright{Part B \textemdash\ Note 6}
 \paragraph{Proposition S3 (Uniform-over-region certificate).}
 Fix a centre $c$ and its far set $\mathcal{F}_c=\{i:\lVert c-z_i\rVert>d\}$, and let $\gamma_c=\min_i\big|\,\lVert c-z_i\rVert-d\,\big|$ be its margin to the threshold. For any ball radius $\delta<\gamma_c$, the near/far partition is constant on $B(c,\delta)$: no source crosses the radius anywhere in the ball, so $\mathcal{F}_y=\mathcal{F}_c$ for all $y\in B(c,\delta)$. Defining the regional tail through this single fixed set,
 \begin{equation}
@@ -170,7 +175,7 @@ Because $\delta<\gamma_c$, every far source stays at distance $>d$ and every nea
 \paragraph{Practical interpretation.} On the flagship ResNet-18 field at $\varepsilon=0.05$ the certified ball radius is $\delta\approx0.5$ in the standardised feature metric---strictly positive, so the region certificate is non-vacuous, but small, about $1.6\%$ of the median inter-query distance (ResNet-50 gives $\delta\approx1.0$, also $1.6\%$; ViT gives $\delta\approx0.9$, about $2.2\%$). The uniform-over-region certificate is therefore genuine but tight; the per-query certificate of Theorem~1, which needs no such ball, carries the main deployment claims.
 
 \section*{Part B \textperiodcentered\ Note 7 --- Selective-prediction operating point}
-\markright{Part B \textemdash\ Note 7 --- Selective-prediction operating point}
+\markright{Part B \textemdash\ Note 7}
 The abstention readout gives a label-free, per-query support signal: a query with no near mass carries no certificate, and the field declines it. To place its operating point quantitatively, we compare against a margin-threshold selective predictor on the same $\sstar$ vote at the coverage the $\ell_1$ certificate itself flags. At the certificate's $36\%$ coverage on ResNet-18 a labelled margin threshold reaches $67\%$ accuracy, against the field's full-coverage $57\%$ ($72\%$ vs $51\%$ at $31\%$ coverage on ResNet-50, $87\%$ vs $72\%$ at $61\%$ coverage on ViT-B/16). The certified-stable set therefore sits \emph{on} the field's accuracy--coverage curve rather than above it: $\sstar$'s distinguishing property is not a higher accuracy at matched coverage but that its selection rule is label-free and carries an a priori interference guarantee, where the margin threshold needs labels to set. This is the sense in which $\sstar$ is a single object---one bound on the far field, read three ways---rather than a competitor to labelled selective prediction.
 
 \begin{figure}[t]
@@ -179,11 +184,12 @@ The abstention readout gives a label-free, per-query support signal: a query wit
 \caption{\textbf{The performance certificate} (frozen ResNet-18, CIFAR-100). (a) Fraction of test queries flagged certified-stable (light), and---of those---the fraction whose deployed prediction equals the intended local prediction (hatched); at $\sstar$ and at the grid-search $\sigma$ this is exactly $100\%$ (Theorem~1). (b) The certificate and deployed accuracy move together: holding tail $\le\varepsilon$ is what recovers accuracy.}
 \end{figure}
 
+\FloatBarrier
 \section*{Part C \textperiodcentered\ The normalised (Gibbs) extension}
 \markright{Part C \textemdash\ The normalised (Gibbs) extension}
 
 \section*{Part C \textperiodcentered\ Note 8 --- Attention as a Gaussian kernel field}
-\markright{Part C \textemdash\ Note 8 --- Attention as a Gaussian kernel field}
+\markright{Part C \textemdash\ Note 8}
 \label{si:attention}
 \emph{This note shows softmax attention is exactly a Gaussian kernel field.}
 \paragraph{The reduction.} Single-head softmax attention assigns query $q$ the weight $a_i=\mathrm{softmax}_i(\langle q,k_i\rangle/\tau)$ over keys $\{k_i\}$. The polarisation identity $\langle q,k_i\rangle=\tfrac12(\lVert q\rVert^2+\lVert k_i\rVert^2-\lVert q-k_i\rVert^2)$ gives
@@ -204,8 +210,8 @@ which is a normalised Gaussian kernel field with source weights $v_i$ and bandwi
 As a fixed-temperature diagnostic, at $\tau^*$ the additive far-interference tail $\mathrm{Tail}/V_{\max}$ stays within budget, while the normalised far-attention mass---the operationally relevant quantity, governed by Note~10---is $0.35$ (BERT) and $0.62$ (GPT-2), not $\varepsilon$-small.
 \paragraph{Empirical confirmation (generic sanity check on pretrained models).} This paragraph is a reduction-and-bound sanity check on off-the-shelf pretrained models; it is \emph{not} part of the unified task-grounded pipeline of Note~10, which uses a single continued-trained reader with an externally supplied evidence partition. On the real query/key vectors of every sampled head of pretrained BERT-base and GPT-2 over long contexts ($\sim\!360$ keys/head, near/far taken as the top-decile-logit versus remaining keys), the polarisation identity holds to the models' float32 precision ($<10^{-4}$ over all heads; it is an algebraic equality, exact up to floating-point rounding), and at $\tau^*$ the certified far-key tail $\mathrm{Tail}/V_{\max}$ stays below $\varepsilon$ across $\sim\!35{,}000$ queries per model with zero violations, rising $18$--$33\times$ over budget at $4\tau^*$ (script and outputs in the repository).
 
-\section*{Part C \textperiodcentered\ Note 9 --- Prototypical networks: the bounded-weight case}
-\markright{Part C \textemdash\ Note 9 --- Prototypical networks: the bounded-weight case}
+\section*{Part C \textperiodcentered\ Note 9 --- ProtoNet: bounded weights}
+\markright{Part C \textemdash\ Note 9}
 \label{si:prototype}
 \emph{This note treats prototypical networks as the bounded-weight instance.}
 \paragraph{The reduction.} A prototypical network assigns a query $x$ to class $k$ by $p(k\mid x)=\mathrm{softmax}_k(-\lVert f(x)-c_k\rVert^2/\tau)$, where $f$ is the embedding and $c_k$ the class prototype (the mean support embedding). This is \emph{immediately} a Gaussian kernel field over the prototypes: with $\sigma^2=\tau/2$,
@@ -215,8 +221,8 @@ p(k\mid x)=\frac{K_\sigma(\lVert f(x)-c_k\rVert^2)}{\sum_j K_\sigma(\lVert f(x)-
 No polarisation is needed---the readout is already a squared-distance kernel---and every source weight is $v_k=1$, so assumption (A1) holds with $V_{\max}=1$ \emph{exactly}. Unlike attention, both the interference-tail certificate (Proposition~1) and the full far-set locality readout (Corollary~2), which compares the far mass to the total output, transfer with $\varepsilon$-tightness.
 \paragraph{Empirical confirmation.} We train a standard $4$-layer convolutional ProtoNet ($64$-dimensional embedding) on Omniglot ($20$-way episodes) to \SI{91.5}{\percent} held-out accuracy, and certify its prototype fields on $12{,}000$ held-out queries from $60$-way episodes, with $d$ the tenth-percentile query--prototype distance and $A=\Neff$ measured at the single-source scale $\sigma_{\text{pair}}$ (as in Note~3). The identity holds to float32 ($<10^{-6}$); at $\sstar$ the certified far-prototype \emph{unnormalised} tail is $0.25\varepsilon$ with zero violations over all $12{,}000$ queries, rising $\sim\!560\times$ over budget at $4\sstar$. Because the weights are bounded ($V_{\max}=1$), the additive certificate transfers at full strength here---the interference tail \emph{and} the full far-set locality readout (Corollary~2), which attention cannot get. The \emph{normalised} softmax far mass at $\sstar$ is $0.08$ (against $0.35$--$0.62$ for attention); this is not $\varepsilon$-small and is not the quantity the additive certificate bounds---it is a Gibbs probability mass, certified separately by the one-shot Gibbs theorem (Note~10, Theorem~2), which on the corrected experiment holds every query below $\varepsilon$ (Fig.~5a of the main text; script and outputs in the repository).
 
-\section*{Part C \textperiodcentered\ Note 10 --- The normalised (Gibbs) resolution certificate}
-\markright{Part C \textemdash\ Note 10 --- The normalised (Gibbs) resolution certificate}
+\section*{Part C \textperiodcentered\ Note 10 --- Gibbs certificate and task-grounded attention}
+\markright{Part C \textemdash\ Note 10}
 \label{si:gibbs}
 \emph{This note proves the normalised (Gibbs) far-mass certificate (Theorem 2).}
 \paragraph{Motivation.} The base certificate (Notes~1 and~3) bounds the \emph{unnormalised} far tail $\sum_{i\in\mathcal{F}}v_i\omega_i$. Several modern readouts are \emph{normalised} Gibbs fields---softmax attention, prototypical networks, Nadaraya--Watson regression, energy-based models---where the output-relevant quantity is the normalised far mass $m_F=\sum_{i\in\mathcal{F}}p_i$ with $p_i=e^{-E_i/\tau}/\sum_j e^{-E_j/\tau}$. For these, deleting the far set changes numerator and denominator together, and the unnormalised bound does not transfer verbatim. The following certificate bounds $m_F$ directly.
@@ -273,15 +279,16 @@ RoBERTa & 2Wiki    & $960$  & $0.518{\pm}0.011$ & $0.54$ & $17.6{\pm}2.2\%$  & $
 \subparagraph{Limitations.} The specific coverage percentages are dataset- and reader-dependent (Table~\ref{tab:replication}); the general claims---the certificate holds with zero violations, the task partition beats a random one, and the far-mass penalty raises certified coverage---replicate across both readers and both datasets, but the exact numbers are not asserted to transfer beyond the four cells tested. A selection effect the bootstrap cannot address is the $21\%$ retention filter: retained examples have shorter contexts (median $1{,}041$ vs $1{,}215$ tokens) and slightly more comparison questions ($27\%$ vs $19\%$), but the same evidence load (mean $2.35$ vs $2.45$ supporting sentences) and difficulty (all dev examples are labelled hard). The selection is mild and mechanistic---it favours contexts short enough to fit---and the reported percentages describe the retained subset, not the excluded longer-context majority (script \texttt{hotpot\_retention.py}). Attention weights are not a causal explanation of the prediction; the certificate reports locality relative to a declared partition, not why the model answers as it does.
 
 \section*{Part C \textperiodcentered\ Note 11 --- Output locality for normalised readouts}
-\markright{Part C \textemdash\ Note 11 --- Output locality for normalised readouts}
+\FloatBarrier
+\markright{Part C \textemdash\ Note 11}
 \paragraph{Corollary S2 (Output locality for normalised readouts).} Let $O=\sum_i p_i u_i$ be a normalised readout with bounded value vectors $\lVert u_i\rVert\le B$, and let $O_{\mathrm{near}}=\sum_{i\notin\mathcal{F}}(p_i/(1-m_F))u_i$ be the output recomputed with the far set deleted and the softmax renormalised over the near set. Then at the certified temperature,
 \begin{equation}
 \lVert O-O_{\mathrm{near}}\rVert\ \le\ 2B\,m_F\ \le\ 2B\varepsilon,
 \end{equation}
 and for a probability-vector output the total-variation change is at most $m_F\le\varepsilon$. \emph{Proof.} Writing $O-O_{\mathrm{near}}=\sum_{i\notin\mathcal{F}}p_i(1-\tfrac1{1-m_F})u_i+\sum_{i\in\mathcal{F}}p_i u_i$, the first sum has total weight $(1-m_F)(\tfrac1{1-m_F}-1)=m_F$ and the second has total weight $m_F$; bounding each $\lVert u_i\rVert\le B$ gives $\lVert O-O_{\mathrm{near}}\rVert\le 2Bm_F$, and $m_F\le\varepsilon$ by Theorem~2. $\blacksquare$ This gives the Gibbs certificate the same operational locality reading as the additive Corollary~2---deleting the far set moves the output by a certified amount---and is exactly the single-head ($H{=}1$) case of the multi-head bound (Note~12).
 
-\section*{Part C \textperiodcentered\ Note 12 --- From a single head to the full attention layer}
-\markright{Part C \textemdash\ Note 12 --- From a single head to the full attention layer}
+\section*{Part C \textperiodcentered\ Note 12 --- Full-layer attention bound}
+\markright{Part C \textemdash\ Note 12}
 \label{si:mha}
 \emph{This note extends the bound from one head to the full attention layer (Proposition S4).}
 \paragraph{Setup.} The Gibbs certificate of Note~10 controls a \emph{single} head: at its certified temperature $\tau_{\mathrm{cert}}$ (or, as reported here, at the deployed temperature), the output-relevant far weight for query $q$ is the normalised far mass $m^h=\sum_{i\in\mathcal{F}}a^h_i$, where $a^h_i$ are the softmax weights of head $h$ and $\mathcal{F}$ is the far-key set. A transformer layer runs $H$ heads in parallel and combines them: head $h$ emits $o^h=\sum_i a^h_i\,\mathrm{val}^h_i$ with value vectors $\mathrm{val}^h_i=W_V^h x_i$, and the layer output is $O=W_O\,[\,o^1;\dots;o^H\,]$ for an output projection $W_O$. We propagate the per-head guarantee to $O$.
@@ -298,11 +305,12 @@ with $m^h$ the normalised far mass of head $h$ (measured, or Gibbs-certified via
 
 \paragraph{Empirical confirmation (generic sanity check on a pretrained layer).} This is a bound-validity check on an off-the-shelf pretrained layer, not part of the unified task-grounded pipeline of Note~10. On a real \texttt{bert-base-uncased} layer ($H=12$ heads) over long contexts, we compute the bound from the pretrained $W_V^h$ and $W_O$ (spectral norms $\lVert W_O\rVert_2\approx 2.4$--$2.8$, $\lVert W_V^h\rVert_2\approx 1.1$--$1.4$) and the per-head far masses, and compare it to the \emph{actual} $\lVert O-\tilde O\rVert_2$ from literally deleting the far keys and recomputing the layer output. Across four sampled layers ($0,3,6,9$) and all sampled queries the bound holds without exception. The actual far-deletion perturbation is a non-trivial $12$--$28\%$ of the layer-output norm---attention genuinely moves under far-key deletion, as the unbounded weights predict---and the weight-norm bound exceeds it by a median factor of $\approx\!47$--$70\times$ (tightening to $\approx\!12$--$19\times$ if $V^h_{\max}$ is measured rather than bounded by $\lVert W_V^h\rVert_2 X$). The bound is thus valid and conservative; its looseness is the price of a purely weight-computable, geometry-only certificate (script and outputs in the repository).
 
+\FloatBarrier
 \section*{Part D \textperiodcentered\ Statistical validity}
 \markright{Part D \textemdash\ Statistical validity}
 
 \section*{Part D \textperiodcentered\ Note 13 --- Conformal finite-sample query certificate}
-\markright{Part D \textemdash\ Note 13 --- Conformal finite-sample query certificate}
+\markright{Part D \textemdash\ Note 13}
 \label{si:conformal}
 \emph{This note certifies a future query by conformal finite-sample coverage.}
 \paragraph{Statement.} The mass $A=V_{\max}\Neff$ is a query-average, so $\sstar(A)$ certifies the \emph{mean} tail. A distribution-free guarantee for a \emph{future single query} follows from conformal prediction with no labels. Let $A_1,\dots,A_n$ be the per-query effective masses on an exchangeable calibration set of unlabelled queries, each measured at the conservative reference scale $A_i=V_{\max}\,\Neff(y_i,\sigma_{\mathrm{pair}})$ so the calibration and the deployed frontier share one bandwidth. Let $A_{(1)}\le\cdots\le A_{(n)}$ be their order statistics. Fix a miscoverage level $\alpha$ and set $k=\lceil(n+1)(1-\alpha)\rceil$; this requires $k\le n$, i.e. $n\ge\lceil(1-\alpha)/\alpha\rceil$ (for $\alpha=0.05$, $n\ge19$), and otherwise $A_{\mathrm{conf}}:=+\infty$ (no finite certificate). The resulting guarantee is finite-sample \emph{marginal} coverage over the joint draw of calibration set and future query, not conditional coverage for a fixed realised calibration set.
@@ -312,11 +320,12 @@ By exchangeability of $A_1,\dots,A_n,A_Y$, the rank of $A_Y$ among the $n+1$ val
 \end{proof}
 \paragraph{Empirical confirmation.} On the three CIFAR-100 backbones, splitting the held-out queries into an $n=7000$-point calibration set and a disjoint $3000$-query validation set at $\alpha=0.05$, the fresh-query coverage $\Pr[A_Y\le A_{\mathrm{conf}}]$ is $0.947$, $0.943$, and $0.953$; with $3000$ validation queries the binomial standard error on a coverage of $0.95$ is $\approx0.004$, so all three are within one to two standard errors of the $0.95$ target, as the marginal guarantee predicts. Further, $A_{\mathrm{conf}}$ exceeds the mean mass $A$ by $10$--$17\%$, so the conformal bandwidth is slightly smaller (more conservative) than the mean-certified one; zero validation queries exceed the budget at $\sigma^*(A_{\mathrm{conf}})$. The conformal wrapper thus upgrades the mean certificate to a distribution-free, label-free, finite-sample guarantee for the next query, at the cost of a fraction of the certified bandwidth (script \texttt{renyi\_conformal.py} in the repository).
 
+\FloatBarrier
 \section*{Part E \textperiodcentered\ The empirical program}
 \markright{Part E \textemdash\ The empirical program}
 
-\section*{Part E \textperiodcentered\ Note 14 --- The certified frontier: vision, text and tabular}
-\markright{Part E \textemdash\ Note 14 --- The certified frontier: vision, text and tabular}
+\section*{Part E \textperiodcentered\ Note 14 --- Cross-modal calibration}
+\markright{Part E \textemdash\ Note 14}
 \emph{This note collects the empirical frontier: the label-free bandwidth against labelled and heuristic baselines across modalities.}
 The certificate's central empirical claim is that a single label-free bandwidth holds the interference budget while matching labelled grid-search accuracy across modalities. Table~\ref{tab:multibb} reports the three frozen CIFAR-100 backbones; Table~\ref{tab:modality} the text and tabular corpora.
 \begin{table}[H]
@@ -393,17 +402,18 @@ tab.\ (54)      & grid (lab.)   & ---    & 70.8\,$\pm$1.1 \\
 \end{figure}
 
 
-\section*{Part E \textperiodcentered\ Note 15 --- Exact sparsification: the hard-truncation comparator}
-\markright{Part E \textemdash\ Note 15 --- Exact sparsification: the hard-truncation comparator}
+\section*{Part E \textperiodcentered\ Note 15 --- Hard truncation}
+\markright{Part E \textemdash\ Note 15}
 \emph{This note compares the smooth certified field against a hard-truncated compact-support operator with the same locality objective.}
 \paragraph{Hard-truncation comparator.} A same-objective locality baseline replaces the smooth kernel by its hard-truncated version $K^{\mathrm{trunc}}_\sigma(r^2)=K_\sigma(r^2)\mathbf{1}\{r\le d\}$, which has \emph{exact} zero far mass by construction rather than a calibrated $\varepsilon$-bounded tail. Selecting its bandwidth by the same labelled oracle grid on the ResNet-18 field, the truncated field reaches accuracy $0.558$ against the smooth $\sstar$ field's $0.566$ (a loss of $0.8$ points), and its hard decisions agree with the smooth full field on only $89.0\%$ of queries. The comparison isolates the value of calibrating a smooth, globally supported field rather than replacing it with a discontinuous compact-support operator: exact locality is available at the price of a small accuracy loss, an $11\%$ decision disagreement with the operator actually deployed, and the loss of continuity under query perturbation. RCP instead keeps the smooth field intact and certifies that its far interference is $\le\varepsilon$, so the certified and deployed readouts are the same object.
 
 
+\FloatBarrier
 \section*{Part F \textperiodcentered\ Verification and reproducibility}
 \markright{Part F \textemdash\ Verification and reproducibility}
 
-\section*{Part F \textperiodcentered\ Note 16 --- Independent numerical verification}
-\markright{Part F \textemdash\ Note 16 --- Independent numerical verification}
+\section*{Part F \textperiodcentered\ Note 16 --- Numerical verification}
+\markright{Part F \textemdash\ Note 16}
 \paragraph{Purpose.} The construction rests on two facts: the participation-ratio tail bound (Proposition~1) and the monotonicity of $\Neff$ in $\sigma$ that makes the one-shot measurement conservative (Proposition~2). Because a certificate is only as good as these, we verify them directly on random configurations, independently of the deep-network experiments.
 
 \paragraph{Tail bound (Proposition~1).} Over $20{,}000$ random all-far configurations---each with a radius $d$, a far-set size $|\mathcal{F}|$ drawn in $[5,200]$, radii $r_i>d$, and a bandwidth $\sigma$ spanning a wide range of $d$---we evaluate the worst-case aligned tail $\sum_{i\in\mathcal{F}}\omega_i$ (all $|v_i|=V_{\max}$) against the certificate $\mathrm{cert}(A,\sigma,d)=\Neff\,\Ksig(d^2)$. The ratio never exceeds one (maximum $0.98$, mean $0.76$; zero violations), and Fig.~\ref{fig:verif}a shows \emph{where} the tightening lives: it approaches one only as $\Neff/|\mathcal{F}|\!\to\!1$ (near-uniform weights), and is strictly below the union/count bound $|\mathcal{F}|\,\Ksig(d^2)$ whenever the far weights are unequal---so the participation ratio is not merely valid but strictly tighter than the count it replaces.
@@ -434,8 +444,8 @@ tab.\ (54)      & grid (lab.)   & ---    & 70.8\,$\pm$1.1 \\
 \label{fig:kernels}
 \end{figure}
 
-\section*{Part F \textperiodcentered\ Note 17 --- Robustness of the certificate}
-\markright{Part F \textemdash\ Note 17 --- Robustness of the certificate}
+\section*{Part F \textperiodcentered\ Note 17 --- Robustness}
+\markright{Part F \textemdash\ Note 17}
 \paragraph{Is the near/far radius meaningful?} Assumption (A2) asks that the radius $d$ separate ``intended'' from ``interfering'' sources. We test this directly by measuring, at $\sstar$, the kernel-weighted fraction of near-set mass that shares the query's class---the quantity the vote actually uses. It is $0.31$, $0.25$, and $0.47$ on ResNet-18, ResNet-50, and ViT-B/16, against a chance level of $0.01$ for $100$ classes: a $25$--$47\times$ enrichment, so the near set is strongly class-aligned. Two qualifications. This is a \emph{plurality}, not a majority---on two of three backbones most individual near sources are other-class---so ``intended sources'' should be read as ``near sources,'' and the decision-equality guarantee of Theorem~1 is equality with the near-field \emph{vote}, which is itself only weakly pure: the certificate guarantees \emph{which} sources decide, not that they decide correctly. Accuracy is a separate, measured outcome (Table~\ref{tab:multibb}), not a corollary of the certificate.
 
 \paragraph{Sensitivity to the budget and radius.} The budget $\varepsilon$ and the radius percentile are inputs, so we sweep them: $\varepsilon\in\{0.01,0.05,0.1,0.2\}$ crossed with the $\{5,10,20\}$th distance percentile for $d$. Deployed accuracy varies by only $2.2$ points (ResNet-18), $6.7$ (ResNet-50), and $2.0$ (ViT) across the whole grid. This flatness must be read correctly: over that grid the realised $\sstar$ itself spans only a $1.34$--$1.41\times$ range (in concentrated high-dimensional geometry the distance percentiles are close and $\sqrt{2\ln(A/\varepsilon)}$ moves slowly), so the informative statement is the \emph{conjunction}---across the grid, accuracy is flat \emph{and} the certified tail stays below budget, while a bandwidth only $4$--$6\times$ larger (the distance heuristics) fails catastrophically. The budget is a genuine dial with a mild, monotone effect on the operating point, not a hidden accuracy knob.
@@ -456,7 +466,7 @@ tab.\ (54)      & grid (lab.)   & ---    & 70.8\,$\pm$1.1 \\
 \end{figure}
 
 \section*{Part F \textperiodcentered\ Note 18 --- Reproducibility}
-\markright{Part F \textemdash\ Note 18 --- Reproducibility}
+\markright{Part F \textemdash\ Note 18}
 \paragraph{Computational specification.} All reported quantities are computed as follows. Features are standardised per dimension ($z$-score using the training mean and standard deviation); distances are Euclidean in that standardised space. The radius $d$ is the $10$th percentile of pairwise centre distances over a $4{,}000$-centre subsample; $A$ and $\Neff$ are the far-mask participation ratio averaged over $2{,}000$ held-out queries measured at $\sigma_{\mathrm{pair}}$; the reported tail/$\varepsilon$ is the \emph{average} far mass over held-out queries divided by $\varepsilon$ (the full per-query distribution, including the maximum, is reported for the flagship field above); the giant-component percentage is the largest connected component as a fraction of $5{,}000$ sampled centres, with an edge whenever two centres lie within $3\sigma$ (this diagnostic is \emph{illustrative} of field locality, not itself the certificate---a larger $\sigma$ mechanically connects more centres, so it visualises the collapse rather than measuring the interference bound). The labelled comparator (``grid'') selects the bandwidth that maximises held-out accuracy over a $30$-point log-spaced grid; it is a grid search on labelled accuracy, not a $k$-fold procedure. The grid spans $[0.5,30]$ for the vision fields and $[0.3,40]$ for the text and modality fields; for the lower-dimensional public datasets it is log-spaced to cover the data scale of each dataset. The accompanying result files for the vision, text, and modality experiments record the exact grid and selected bandwidth for each. The interference budget is $\varepsilon=0.05$ throughout. Every run uses a fixed seed; the five-seed re-samples vary only the drawn centres and queries. Scripts and result files accompany the manuscript.
 
 \paragraph{Growing-field experiments.} The re-certification result (main text, ``Re-calibration follows memory density'') uses two growth protocols on CIFAR-100 penultimate features. \emph{Density growth} (three backbones: ResNet-18, ResNet-50, ViT-B/16) densifies the field from $3$ to $120$ examples per class over five stages ($300$ to $12{,}000$ centres, all $100$ classes present throughout so the test set is fixed); a labelled grid search fixes $\sigma$ once on the sparse $3$-per-class field, and at each stage we report $\sstar$ (re-measured), that frozen bandwidth, and a per-stage re-tuned oracle grid. \emph{Class-incremental growth} (ResNet-18) instead adds classes over five stages ($10\!\to\!25\!\to\!50\!\to\!75\!\to\!100$) at a fixed $120$ examples per class, restricting the test set to classes seen so far (standard class-incremental protocol); the labelled grid is fixed once on the initial $10$-class field. All bandwidth selection, radius, mass, and tail definitions match the computational specification above ($\varepsilon=0.05$, $d$ at the $10$th distance percentile, $A$ over $3{,}000$ held-out queries). The class-incremental run is a reported \emph{null}: adding classes at fixed density leaves the field geometry essentially unchanged (the radius $d$ drifts by $-3.5\%$ over the full range and $\sstar$ shrinks only from $6.26$ to $5.43$), so the frozen bandwidth stays within budget (tail/$\varepsilon$ from $0.01$ to $0.23$, never violating) and ties $\sstar$ on accuracy---confirming that the re-certification advantage is driven by densification, not by class count. Both scripts and their result files accompany the manuscript.
