@@ -1,7 +1,7 @@
 {
   "test": "packing-bound kill test (Mihai audit item 2)",
   "outcome": "DEFER \u2014 not promoted to manuscript",
-  "reason": "Bound is non-vacuous at face value (sigma*_pack/sigma*_meas approx 0.36-0.61 across R18/R50/ViT), but the delta-separation assumption is not reproducibly satisfiable: on R18 the raw min separation is 6e-5 of the locality scale, pinned by a single near-duplicate pair (effectively zero, Mihai's explicit defer condition), and delta disagrees ~10x between float32-GPU and float64-CPU. Gate requires reproducible, defensible (k,delta) on all three flagship fields; R18 fails.",
+  "reason": "Bound is non-vacuous at face value (sigma*_pack/sigma*_meas approx 0.36-0.61 across R18/R50/ViT), but the delta-separation assumption is not reproducibly defensible. On R18 the deterministic float64-CPU min separation is 6e-5 of the locality scale, pinned by a single near-duplicate pair (effectively zero, Mihai's explicit defer condition). Across the two precisions the resolved delta disagrees materially and inconsistently by field (float32-GPU vs float64-CPU min: R18 ~9.4x, R50 ~203x, ViT ~1.2x), so (k,delta) cannot be pinned to a single reproducible value on all three flagship fields. Gate requires reproducible, defensible (k,delta); R18 and R50 fail.",
   "packing_results": {
     "r18": {
       "tag": "r18",
@@ -80,5 +80,10 @@
       "npairs_below_10pct": 0,
       "total_pairs": 1999000
     }
+  },
+  "delta_crossprecision_ratio_gpu_f32_vs_cpu_f64": {
+    "r18": 9.4,
+    "r50": 202.9,
+    "vit": 1.2
   }
 }
