@@ -1,0 +1,84 @@
+{
+  "test": "packing-bound kill test (Mihai audit item 2)",
+  "outcome": "DEFER \u2014 not promoted to manuscript",
+  "reason": "Bound is non-vacuous at face value (sigma*_pack/sigma*_meas approx 0.36-0.61 across R18/R50/ViT), but the delta-separation assumption is not reproducibly satisfiable: on R18 the raw min separation is 6e-5 of the locality scale, pinned by a single near-duplicate pair (effectively zero, Mihai's explicit defer condition), and delta disagrees ~10x between float32-GPU and float64-CPU. Gate requires reproducible, defensible (k,delta) on all three flagship fields; R18 fails.",
+  "packing_results": {
+    "r18": {
+      "tag": "r18",
+      "n": 2000,
+      "d": 27.3663,
+      "delta": 0.015625,
+      "d_over_delta": 1751.4,
+      "kdoub": 9.687,
+      "sstar_pack": 2.1724,
+      "sstar_meas": 6.0807,
+      "ratio": 0.3573,
+      "sstar_pack_kplus1": 2.0685,
+      "sstar_pack_kminus1": 2.2936
+    },
+    "r50": {
+      "tag": "r50",
+      "n": 2000,
+      "d": 51.7997,
+      "delta": 0.0625,
+      "d_over_delta": 828.8,
+      "kdoub": 9.682,
+      "sstar_pack": 4.3105,
+      "sstar_meas": 11.5717,
+      "ratio": 0.3725,
+      "sstar_pack_kplus1": 4.1046,
+      "sstar_pack_kminus1": 4.5508
+    },
+    "vit": {
+      "tag": "vit",
+      "n": 2000,
+      "d": 35.4418,
+      "delta": 4.694396,
+      "d_over_delta": 7.5,
+      "kdoub": 9.132,
+      "sstar_pack": 4.6914,
+      "sstar_meas": 7.7279,
+      "ratio": 0.6071,
+      "sstar_pack_kplus1": 4.4703,
+      "sstar_pack_kminus1": 4.9499
+    }
+  },
+  "delta_stability": {
+    "r18": {
+      "tag": "r18",
+      "min": 0.0016674111472944992,
+      "q_1em4": 16.190442378457895,
+      "q_1em3": 19.79616843697029,
+      "q_1em2": 23.224797990538505,
+      "q_0p1": 27.366230754158583,
+      "ratio_min_to_q0p1": 6.092951427156693e-05,
+      "npairs_below_1pct_of_q0p1": 1,
+      "npairs_below_10pct": 1,
+      "total_pairs": 1998999
+    },
+    "r50": {
+      "tag": "r50",
+      "min": 12.682350924547976,
+      "q_1em4": 26.71768373946828,
+      "q_1em3": 34.02485682145577,
+      "q_1em2": 42.43060290321363,
+      "q_0p1": 51.87239214229525,
+      "ratio_min_to_q0p1": 0.2444913450252693,
+      "npairs_below_1pct_of_q0p1": 0,
+      "npairs_below_10pct": 0,
+      "total_pairs": 1998999
+    },
+    "vit": {
+      "tag": "vit",
+      "min": 5.422258649619788,
+      "q_1em4": 13.926309455602189,
+      "q_1em3": 19.46847148029458,
+      "q_1em2": 27.9359004190376,
+      "q_0p1": 35.40083305225947,
+      "ratio_min_to_q0p1": 0.15316754387150533,
+      "npairs_below_1pct_of_q0p1": 0,
+      "npairs_below_10pct": 0,
+      "total_pairs": 1999000
+    }
+  }
+}

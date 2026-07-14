@@ -1,6 +1,6 @@
 # The Resolution Calibration Principle: Certified Locality for Kernel and Gibbs Fields
 
-R. Negulescu (The Informational Buildup Foundation, IBF) · M. Tănase (Bucharest, Romania) · C. Bereanu (The Simion Stoilow Institute of Mathematics of the Romanian Academy, IMAR)
+R. Negulescu (The Informational Buildup Foundation, IBF) · M. Tănase (Independent researcher, Bucharest, Romania) · C. Bereanu (The Simion Stoilow Institute of Mathematics of the Romanian Academy, IMAR)
 
 A kernel field reads a metric space through a superposition of distance-decaying
 kernels at weighted sources — kernel density estimators, Nadaraya–Watson regressors,

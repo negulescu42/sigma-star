@@ -5,7 +5,7 @@ the released numerical outputs and the manuscript figures.
 
 ## Manuscript commit
 The PDFs in this repository (`rcp_main.pdf`, `rcp_si.pdf`) correspond to this
-repository commit. The main text is 8 pages (≈7 pages of content; the 29-entry
+repository commit. The main text is 8 pages (≈7 pages of content; the 36-entry
 bibliography spills to page 8, which does not count toward the NMI display/length limit).
 
 ## Software environment
@@ -29,9 +29,12 @@ bibliography spills to page 8, which does not count toward the NMI display/lengt
   (the script-based HF loaders for 2Wiki are deprecated and no longer load).
 - CIFAR-100 penultimate features from frozen ResNet-18, ResNet-50, ViT-B/16.
 
-NOTE ON REVISION PINNING: the Hugging Face model/adapter/dataset identifiers above
-are named but not pinned to individual commit hashes; to pin exactly, pass
-`revision=<hash>` to `from_pretrained` / `load_dataset` for the snapshot you resolve.
+NOTE ON IDENTIFIERS VS. REVISION HASHES: the entries above are Hugging Face
+*identifiers*, not immutable revision pins -- they name the artifacts but do not
+fix a specific commit hash. For an exactly-reproducible snapshot, pass
+`revision=<commit-hash>` to `from_pretrained` / `load_dataset` for the revision
+you resolve at download time; the results in this repository were produced with
+the then-current default revision of each identifier.
 The continued-trained canonical reader is not released as a checkpoint; it is
 reproduced deterministically from `bert-base-uncased` + the pf-hotpotqa adapter by
 `experiments/hotpot_unified.py` at seed 0 (see below).
